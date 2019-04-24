@@ -205,10 +205,10 @@ let
     };
 
     "cffi" = python.mkDerivation {
-      name = "cffi-1.12.2";
+      name = "cffi-1.12.3";
       src = pkgs.fetchurl {
-        url = "https://files.pythonhosted.org/packages/64/7c/27367b38e6cc3e1f49f193deb761fe75cda9f95da37b67b422e62281fcac/cffi-1.12.2.tar.gz";
-        sha256 = "e113878a446c6228669144ae8a56e268c91b7f1fafae927adc4879d9849e0ea7";
+        url = "https://files.pythonhosted.org/packages/93/1a/ab8c62b5838722f29f3daffcc8d4bd61844aa9b5f437341cc890ceee483b/cffi-1.12.3.tar.gz";
+        sha256 = "041c81822e9f84b1d9c401182e174996f0bae9991f33725d059b771744290774";
       };
       doCheck = commonDoCheck;
       checkInputs = commonBuildInputs ++ [ ];
@@ -280,10 +280,10 @@ let
     };
 
     "cmd2" = python.mkDerivation {
-      name = "cmd2-0.9.11";
+      name = "cmd2-0.9.12";
       src = pkgs.fetchurl {
-        url = "https://files.pythonhosted.org/packages/e6/83/555bf188026779e74e0f8929ab039327bbaac3161f2d61804947473d03d0/cmd2-0.9.11.tar.gz";
-        sha256 = "34a335b05f149d1b23e5657d597e7121b74ddf2e07d1c58f39855ade0e2a5242";
+        url = "https://files.pythonhosted.org/packages/ef/02/3d8693f779de1f573a4f28c8efbec3356a78c6bf4dd057fb150b7f71e8b1/cmd2-0.9.12.tar.gz";
+        sha256 = "4cffd3b697cee0786101522bb520458eeedd5ddb2ce120f0f981d61961dcfe92";
       };
       doCheck = commonDoCheck;
       checkInputs = commonBuildInputs ++ [ ];
@@ -299,7 +299,7 @@ let
       meta = with pkgs.stdenv.lib; {
         homepage = "https://github.com/python-cmd2/cmd2";
         license = licenses.mit;
-        description = "cmd2 - a tool for building interactive command line applications in Python";
+        description = "cmd2 - quickly build feature-rich and user-friendly interactive command line applications in Python";
       };
     };
 
@@ -534,10 +534,10 @@ let
     };
 
     "keystoneauth1" = python.mkDerivation {
-      name = "keystoneauth1-3.13.1";
+      name = "keystoneauth1-3.14.0";
       src = pkgs.fetchurl {
-        url = "https://files.pythonhosted.org/packages/9c/fc/6ef3ab930af98cb7de2f26adb7083939ee78dbda0ee35677b21d41c7dc0e/keystoneauth1-3.13.1.tar.gz";
-        sha256 = "ed78ed68d1915614e590be428a79c48df09f4f51acb3272b3306d7ae1a59f479";
+        url = "https://files.pythonhosted.org/packages/6b/46/7b169d73e6678e4fda81289538e1bce51cb914cbd2fa0326b78241815074/keystoneauth1-3.14.0.tar.gz";
+        sha256 = "b14f363d02142177c968cfffeb9eb37113682c03ac3c65d483424e203dd602c3";
       };
       doCheck = commonDoCheck;
       checkInputs = commonBuildInputs ++ [
@@ -1476,10 +1476,10 @@ let
     };
 
     "pytz" = python.mkDerivation {
-      name = "pytz-2018.9";
+      name = "pytz-2019.1";
       src = pkgs.fetchurl {
-        url = "https://files.pythonhosted.org/packages/af/be/6c59e30e208a5f28da85751b93ec7b97e4612268bb054d0dff396e758a90/pytz-2018.9.tar.gz";
-        sha256 = "d5f05e487007e29e03409f9398d074e158d920d36eb82eaf66fb1136b0c5374c";
+        url = "https://files.pythonhosted.org/packages/df/d5/3e3ff673e8f3096921b3f1b79ce04b832e0100b4741573154b72b756a681/pytz-2019.1.tar.gz";
+        sha256 = "d747dd3d23d77ef44c6a3526e274af6efeb0a6f1afd5a69ba4d5be4098c8e141";
       };
       doCheck = commonDoCheck;
       checkInputs = commonBuildInputs ++ [ ];
@@ -1548,17 +1548,19 @@ let
     };
 
     "rfc3986" = python.mkDerivation {
-      name = "rfc3986-1.2.0";
+      name = "rfc3986-1.3.1";
       src = pkgs.fetchurl {
-        url = "https://files.pythonhosted.org/packages/e1/f0/d1571e8891e8e93ebb0fc61fb09c04acf0088bab3fa1cb02eb577e7bc135/rfc3986-1.2.0.tar.gz";
-        sha256 = "bc3ae4b7cd88a99eff2d3900fcb858d44562fd7f273fc07aeef568b9bb6fc4e1";
+        url = "https://files.pythonhosted.org/packages/84/87/ce68f4ad914d3a312c7fbb797d6b273d51037a02e0d40f622fccd41ead0f/rfc3986-1.3.1.tar.gz";
+        sha256 = "2cb285760d8ed6683f9a242686961918d555f6783027d596cb82df51bfa0f9ca";
       };
       doCheck = commonDoCheck;
       checkInputs = commonBuildInputs ++ [ ];
       buildInputs = commonBuildInputs ++ [ ];
       nativeBuildInputs = commonBuildInputs ++ [ ];
       propagatedNativeBuildInputs = commonBuildInputs ++ [ ];
-      propagatedBuildInputs = [ ];
+      propagatedBuildInputs = [
+        self."idna"
+      ];
       meta = with pkgs.stdenv.lib; {
         homepage = "http://rfc3986.readthedocs.io";
         license = licenses.asl20;
@@ -1635,10 +1637,10 @@ let
     };
 
     "urllib3" = python.mkDerivation {
-      name = "urllib3-1.24.1";
+      name = "urllib3-1.24.2";
       src = pkgs.fetchurl {
-        url = "https://files.pythonhosted.org/packages/b1/53/37d82ab391393565f2f831b8eedbffd57db5a718216f82f1a8b4d381a1c1/urllib3-1.24.1.tar.gz";
-        sha256 = "de9529817c93f27c8ccbfead6985011db27bd0ddfcdb2d86f3f663385c6a9c22";
+        url = "https://files.pythonhosted.org/packages/fd/fa/b21f4f03176463a6cccdb612a5ff71b927e5224e83483012747c12fc5d62/urllib3-1.24.2.tar.gz";
+        sha256 = "9a247273df709c4fedb38c711e44292304f73f39ab01beda9f6b9fc375669ac3";
       };
       doCheck = commonDoCheck;
       checkInputs = commonBuildInputs ++ [ ];
