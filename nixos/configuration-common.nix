@@ -8,6 +8,7 @@ in
   imports =
     [ 
       ./x.nix
+      ./virtualization.nix
     ];
 
   boot.initrd.luks.devices = [
@@ -19,8 +20,7 @@ in
     }
   ];
 
-  # only for ssd
-  fileSystems."/".options = [ "noatime" "nodiratime" "discard" ];
+  fileSystems."/".options = if data.ssd then [ "noatime" "nodiratime" "discard" ] else [];
 
   boot.cleanTmpDir = true;
   #boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -44,6 +44,9 @@ in
     enable = true;
     permitRootLogin = "prohibit-password";
     passwordAuthentication = false;
+    allowSFTP = true;
+    forwardX11 = true;
+    openFirewall = true;
   };
 
   hardware.pulseaudio = {
@@ -51,9 +54,9 @@ in
     support32Bit = true;
   };
 
-  users.users.fiction = {
+  users.users.${data.username} = {
     isNormalUser = true;
-    home = "/home/fiction";
+    home = "/home/${data.username}";
     createHome = true;
     description = "Gregor";
     useDefaultShell = false;
@@ -61,11 +64,10 @@ in
     openssh.authorizedKeys.keys = [ 
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJAMaDaMzVzsgxq64VQ3YTeBfENo96zK56ld0OU/jgi1"
     ];
-
     
-    packages = with pkgs; [ slack vscode-with-extensions chromium firefox thunderbird libreoffice jetbrains.idea-community adobe-reader mplayer ]; 
+    packages = with pkgs; (if data.gui then [ slack vscode-with-extensions chromium firefox thunderbird libreoffice jetbrains.idea-community adobe-reader mplayer ] else []); 
 
-    extraGroups = [
+    extraGroups= [
       "audio"
       "docker"
       "networkmanager"
@@ -77,7 +79,6 @@ in
     ];
   };
 
-
   environment.variables = { EDITOR = "vim"; };
   time.timeZone = "Europe/Ljubljana";
  
@@ -88,11 +89,6 @@ in
     "/run/current-system/sw/bin/zsh"
   ];
 
-  virtualisation.docker.enable = true;  
-  #environment.systemPackages = with pkgs; [ docker docker_compose ] ++ environment.systemPackages;
-
-  virtualisation.virtualbox.host.enable = true;
-  virtualisation.virtualbox.host.enableExtensionPack = true;
 
   security.sudo = {
     enable = true;
@@ -133,14 +129,15 @@ in
       vim
       wget
 
+  ] ++ if data.gui then with pkgs; [
       gnome3.gnome-screenshot
       gparted
       wireshark-gtk
       xorg.xbacklight
       pavucontrol
       playerctl
-      scrot
-  ];
+      scrot 
+  ] else [];
 
 
   nix.package = pkgs.nixUnstable;
@@ -150,23 +147,6 @@ in
   nixpkgs.config.pulseaudio = true;
   nixpkgs.config.dmenu.enableXft = true;
 
-  nixpkgs.config.firefox = {
-   enableGoogleTalkPlugin = true;
-   enableAdobeFlash = true;
-   enableAdobeFlashDRM = true;
-   jre = false;
-   icedtea = true;
-  };
-  nixpkgs.config.chromium = {
-   enablePepperFlash = true;
-   enableWideVine = true;
-   enabePepperPDF = true;
-   jre = false;
-   icedtea = true;
-  };
-
-
-  documentation.man.enable = true;
 
   hardware.opengl.driSupport32Bit = true; 
 
@@ -182,6 +162,14 @@ in
     dates = "03:15";
     options = "--delete-older-than 30d";
   };
+  
+  services.nixosManual.showManual = false;
+  documentation.man.enable = true;
+
+  # Disable the infamous systemd screen/tmux killer
+  services.logind.extraConfig = ''
+    KillUserProcesses=no
+  '';
 
   
 }
