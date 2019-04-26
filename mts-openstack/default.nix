@@ -1,3 +1,5 @@
+{ project ? "mts", id ? "7815721ea6a340e9a7e9756e7b6414c3", username ? "g.pogacnik" }:
+
 let 
    pkgs = import <nixpkgs> {};
    python = import ./requirements.nix { inherit pkgs; };
@@ -45,7 +47,7 @@ let
 in
 
 pkgs.stdenv.mkDerivation {
-  name = "mts-openstack";
+  name = "${project}-openstack";
 
   buildInputs = [
     osProxyOn
@@ -61,15 +63,18 @@ pkgs.stdenv.mkDerivation {
     python.packages."python-glanceclient"
     python.packages."python-heatclient"
     python.packages."python-swiftclient"
+    python.packages."ipcalc"
+    python.packages."ruamel.yaml"
+    python.packages."deepdiff"
   ];
 
   shellHook = ''
     export OS_AUTH_URL=https://keystone.sportradar.ag:5000/v3
-    export OS_PROJECT_ID=7815721ea6a340e9a7e9756e7b6414c3
-    export OS_PROJECT_NAME="mts"
+    export OS_PROJECT_ID=${id}
+    export OS_PROJECT_NAME="${project}"
     export OS_USER_DOMAIN_NAME="Default"
     export OS_PROJECT_DOMAIN_ID="default"
-    export OS_USERNAME="g.pogacnik"
+    export OS_USERNAME="${username}"
     export OS_PASSWORD=$(echo "${pass}" | ${pkgs.coreutils}/bin/base64 -d | ${pkgs.coreutils}/bin/tr -d '\n')
     export OS_REGION_NAME="zrh"
     export OS_INTERFACE=public
@@ -77,8 +82,8 @@ pkgs.stdenv.mkDerivation {
     alias proxy-on=". os-proxy-on"
     alias proxy-off=". os-proxy-off"
     # openstack endpoint list -f value | grep zrh | cut -d" " -f 7 | sed 's/http.*:\/\///g' | cut -d '/' -f 1 | sort | uniq
-    export PS1='\n\[\033[1;32m\][mts-openstack:\w]\$\[\033[0m\] '
-    figlet "MTS OpenStack" | lolcat --freq 0.5
+    export PS1='\n\[\033[1;32m\][${project}-openstack:\w]\$\[\033[0m\] '
+    figlet "$(echo ${project} | tr '[:lower:]' '[:upper:]') OpenStack" | lolcat --freq 0.5
     echo "From home you need to enable VPN and do 'proxy-on' before and 'proxy-off' after."
   '';
 }

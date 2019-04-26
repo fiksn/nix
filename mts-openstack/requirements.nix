@@ -2,7 +2,7 @@
 # See more at: https://github.com/garbas/pypi2nix
 #
 # COMMAND:
-#   pypi2nix -V 3.7 -e python-cinderclient -e python-glanceclient -e python-heatclient -e python-keystoneclient -e python-neutronclient -e python-novaclient -e python-swiftclient -e python-openstackclient -E openssl -E libffi -E python37Packages.setuptools -E python37Packages.setuptools_scm -E python37Packages.setuptools-git -E python37Packages.vcversioner
+#   pypi2nix -V 3.7 -e python-cinderclient -e python-glanceclient -e python-heatclient -e python-keystoneclient -e python-neutronclient -e python-novaclient -e python-swiftclient -e python-openstackclient -e deepdiff -e ruamel.yaml -e ipcalc -E openssl -E libffi -E python37Packages.setuptools -E python37Packages.setuptools_scm -E python37Packages.setuptools-git -E python37Packages.vcversioner
 #
 
 { pkgs ? import <nixpkgs> {},
@@ -396,6 +396,28 @@ let
       };
     };
 
+    "deepdiff" = python.mkDerivation {
+      name = "deepdiff-4.0.6";
+      src = pkgs.fetchurl {
+        url = "https://files.pythonhosted.org/packages/19/6e/47b8ec63a0dea28c7d59e8cfadc4ea11c53ee156100bf42fd63d92f32e65/deepdiff-4.0.6.tar.gz";
+        sha256 = "55e461f56dcae3dc540746b84434562fb7201e5c27ecf28800e4cfdd17f61e56";
+      };
+      doCheck = commonDoCheck;
+      checkInputs = commonBuildInputs ++ [ ];
+      buildInputs = commonBuildInputs ++ [ ];
+      nativeBuildInputs = commonBuildInputs ++ [ ];
+      propagatedNativeBuildInputs = commonBuildInputs ++ [ ];
+      propagatedBuildInputs = [
+        self."jsonpickle"
+        self."ordered-set"
+      ];
+      meta = with pkgs.stdenv.lib; {
+        homepage = "https://github.com/seperman/deepdiff";
+        license = licenses.mit;
+        description = "Deep Difference and Search of any Python object/data.";
+      };
+    };
+
     "dogpile.cache" = python.mkDerivation {
       name = "dogpile.cache-0.7.1";
       src = pkgs.fetchurl {
@@ -433,6 +455,25 @@ let
         homepage = "https://github.com/kjd/idna";
         license = licenses.bsdOriginal;
         description = "Internationalized Domain Names in Applications (IDNA)";
+      };
+    };
+
+    "ipcalc" = python.mkDerivation {
+      name = "ipcalc-1.99.0";
+      src = pkgs.fetchurl {
+        url = "https://files.pythonhosted.org/packages/8f/14/bb4034c87b4b2a47b381a52051138c3aeb87515a498185e275d40585deeb/ipcalc-1.99.0.tar.gz";
+        sha256 = "17b9d85859ef70e1996426a723d3891f6b99dd0e283986ea92c37a06601725d9";
+      };
+      doCheck = commonDoCheck;
+      checkInputs = commonBuildInputs ++ [ ];
+      buildInputs = commonBuildInputs ++ [ ];
+      nativeBuildInputs = commonBuildInputs ++ [ ];
+      propagatedNativeBuildInputs = commonBuildInputs ++ [ ];
+      propagatedBuildInputs = [ ];
+      meta = with pkgs.stdenv.lib; {
+        homepage = "https://github.com/tehmaze/ipcalc/";
+        license = "UNKNOWN";
+        description = "IP subnet calculator";
       };
     };
 
@@ -492,6 +533,25 @@ let
         homepage = "https://github.com/stefankoegl/python-json-patch";
         license = "Modified BSD License";
         description = "Apply JSON-Patches (RFC 6902) ";
+      };
+    };
+
+    "jsonpickle" = python.mkDerivation {
+      name = "jsonpickle-1.1";
+      src = pkgs.fetchurl {
+        url = "https://files.pythonhosted.org/packages/12/90/f9606d3ac809e49b6569a5aa5d6a094d11bb4b455a25080968f185df6624/jsonpickle-1.1.tar.gz";
+        sha256 = "625098cc8e5854b8c23b587aec33bc8e33e0e597636bfaca76152249c78fe5c1";
+      };
+      doCheck = commonDoCheck;
+      checkInputs = commonBuildInputs ++ [ ];
+      buildInputs = commonBuildInputs ++ [ ];
+      nativeBuildInputs = commonBuildInputs ++ [ ];
+      propagatedNativeBuildInputs = commonBuildInputs ++ [ ];
+      propagatedBuildInputs = [ ];
+      meta = with pkgs.stdenv.lib; {
+        homepage = "https://jsonpickle.github.io/";
+        license = licenses.bsdOriginal;
+        description = "Python library for serializing any arbitrary object graph into JSON";
       };
     };
 
@@ -707,6 +767,25 @@ let
       };
     };
 
+    "ordered-set" = python.mkDerivation {
+      name = "ordered-set-3.1.1";
+      src = pkgs.fetchurl {
+        url = "https://files.pythonhosted.org/packages/a3/b7/d4d69641cbe707a45c23b190f2d717466ba5accc4c70b5f7a8a450387895/ordered-set-3.1.1.tar.gz";
+        sha256 = "a7bfa858748c73b096e43db14eb23e2bc714a503f990c89fac8fab9b0ee79724";
+      };
+      doCheck = commonDoCheck;
+      checkInputs = commonBuildInputs ++ [ ];
+      buildInputs = commonBuildInputs ++ [ ];
+      nativeBuildInputs = commonBuildInputs ++ [ ];
+      propagatedNativeBuildInputs = commonBuildInputs ++ [ ];
+      propagatedBuildInputs = [ ];
+      meta = with pkgs.stdenv.lib; {
+        homepage = "https://github.com/LuminosoInsight/ordered-set";
+        license = "MIT-LICENSE";
+        description = "A MutableSet that remembers its order, so that every entry has an index.";
+      };
+    };
+
     "os-client-config" = python.mkDerivation {
       name = "os-client-config-1.32.0";
       src = pkgs.fetchurl {
@@ -804,10 +883,10 @@ let
     };
 
     "oslo.config" = python.mkDerivation {
-      name = "oslo.config-6.8.1";
+      name = "oslo.config-6.9.0";
       src = pkgs.fetchurl {
-        url = "https://files.pythonhosted.org/packages/53/e5/03ee395f0d9fee8f7e55e69ee3010b9c1d359ffec29f735dd5c76ec10e1d/oslo.config-6.8.1.tar.gz";
-        sha256 = "7ea34cf642df4d18f92637b58dee92c1667c141aa004ce472e257fafc278ce11";
+        url = "https://files.pythonhosted.org/packages/65/17/95792cfc0d8a96a059cc4ab022fca1593594dc54e108c91580a2935b5fbc/oslo.config-6.9.0.tar.gz";
+        sha256 = "70fb3ad10f0efe6ff0c9c1c8c186ac8253c16faddd1f85cf80dca262a65ac896";
       };
       doCheck = commonDoCheck;
       checkInputs = commonBuildInputs ++ [
@@ -901,10 +980,10 @@ let
     };
 
     "oslo.log" = python.mkDerivation {
-      name = "oslo.log-3.42.3";
+      name = "oslo.log-3.43.0";
       src = pkgs.fetchurl {
-        url = "https://files.pythonhosted.org/packages/15/24/9fd29f00a56c41306e13a0e88e11dae5bb3c9c4f4c8ea1a7fbd67f3e0740/oslo.log-3.42.3.tar.gz";
-        sha256 = "b836a6b23beb35120663d52e54312527946a613f8959d51761fed2df9d2cf55c";
+        url = "https://files.pythonhosted.org/packages/4e/14/a5182a6e79e979839751b00e166400c262feaec666fb233bd95e2b85ef64/oslo.log-3.43.0.tar.gz";
+        sha256 = "44d6bf88b159e044a9b332f35ef98d138e404d014ec3108fce8343bb7fb24faa";
       };
       doCheck = commonDoCheck;
       checkInputs = commonBuildInputs ++ [
@@ -940,10 +1019,10 @@ let
     };
 
     "oslo.serialization" = python.mkDerivation {
-      name = "oslo.serialization-2.28.2";
+      name = "oslo.serialization-2.29.0";
       src = pkgs.fetchurl {
-        url = "https://files.pythonhosted.org/packages/3d/c6/9d18210db0aca8ddb292f1fe8ad25cf7f80970e89c113af90047d5bf0d48/oslo.serialization-2.28.2.tar.gz";
-        sha256 = "c3c73eb1fa45aaf4cdf3b82a0cf85497a245c7e88e803fdafa29e4315d991eb3";
+        url = "https://files.pythonhosted.org/packages/24/34/16df45b6d125b6f8f0aaa6e65bb11521b5751e94dacdb4045182e9f4dca8/oslo.serialization-2.29.0.tar.gz";
+        sha256 = "67ccfdf91fbb1f0ec3e6ee0151bf020143af4f9236781a9d0398b450b1a897fa";
       };
       doCheck = commonDoCheck;
       checkInputs = commonBuildInputs ++ [
@@ -959,6 +1038,7 @@ let
         self."pbr"
       ];
       propagatedBuildInputs = [
+        self."PyYAML"
         self."msgpack"
         self."oslo.utils"
         self."pbr"
@@ -973,10 +1053,10 @@ let
     };
 
     "oslo.utils" = python.mkDerivation {
-      name = "oslo.utils-3.40.3";
+      name = "oslo.utils-3.41.0";
       src = pkgs.fetchurl {
-        url = "https://files.pythonhosted.org/packages/6a/be/2623aefe3766145d59b224fbc313fd15c53c5f2295b869a5cb50ab800fd0/oslo.utils-3.40.3.tar.gz";
-        sha256 = "92fdd8b7f5cb079f03648015c186c8292a0a7bba918cdab32fdd1133b83280a1";
+        url = "https://files.pythonhosted.org/packages/71/39/5f91864489dc105aecd3015a23f9fdcff68f97fd46e07aa0034d78aa4323/oslo.utils-3.41.0.tar.gz";
+        sha256 = "3f6ed3da33ddd1648baa6cd20b1cf64ceb6c3cb3e1c745d63e793a7e5b1520c2";
       };
       doCheck = commonDoCheck;
       checkInputs = commonBuildInputs ++ [
@@ -1010,10 +1090,10 @@ let
     };
 
     "pbr" = python.mkDerivation {
-      name = "pbr-5.1.3";
+      name = "pbr-5.2.0";
       src = pkgs.fetchurl {
-        url = "https://files.pythonhosted.org/packages/97/76/c151aa4a3054ce63bb6bbd32f3541e4ae068534ed8b74ee2687f6773b013/pbr-5.1.3.tar.gz";
-        sha256 = "8c361cc353d988e4f5b998555c88098b9d5964c2e11acf7b0d21925a66bb5824";
+        url = "https://files.pythonhosted.org/packages/11/3d/3b5bbf398535d78a8cd7cf01441a745dedda5ca69f82658f2c7672bcdcce/pbr-5.2.0.tar.gz";
+        sha256 = "d950c64aeea5456bbd147468382a5bb77fe692c13c9f00f0219814ce5b642755";
       };
       doCheck = commonDoCheck;
       checkInputs = commonBuildInputs ++ [ ];
@@ -1565,6 +1645,25 @@ let
         homepage = "http://rfc3986.readthedocs.io";
         license = licenses.asl20;
         description = "Validating URI References per RFC 3986";
+      };
+    };
+
+    "ruamel.yaml" = python.mkDerivation {
+      name = "ruamel.yaml-0.15.94";
+      src = pkgs.fetchurl {
+        url = "https://files.pythonhosted.org/packages/24/f1/1adcf396711d3c9c30b67a5c850cfb64afbccd41d7d85adf87732e4b156f/ruamel.yaml-0.15.94.tar.gz";
+        sha256 = "0939bcb399ad037ef903d74ccf2f8a074f06683bc89133ad19305067d34487c8";
+      };
+      doCheck = commonDoCheck;
+      checkInputs = commonBuildInputs ++ [ ];
+      buildInputs = commonBuildInputs ++ [ ];
+      nativeBuildInputs = commonBuildInputs ++ [ ];
+      propagatedNativeBuildInputs = commonBuildInputs ++ [ ];
+      propagatedBuildInputs = [ ];
+      meta = with pkgs.stdenv.lib; {
+        homepage = "https://bitbucket.org/ruamel/yaml";
+        license = "MIT license";
+        description = "ruamel.yaml is a YAML parser/emitter that supports roundtrip preservation of comments, seq/map flow style, and map key order";
       };
     };
 

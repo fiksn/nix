@@ -129,7 +129,7 @@ in
       vim
       wget
 
-  ] ++ if data.gui then with pkgs; [
+  ] ++ (if data.gui then with pkgs; [
       gnome3.gnome-screenshot
       gparted
       wireshark-gtk
@@ -137,7 +137,7 @@ in
       pavucontrol
       playerctl
       scrot 
-  ] else [];
+  ] else []);
 
 
   nix.package = pkgs.nixUnstable;
