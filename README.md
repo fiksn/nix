@@ -19,3 +19,7 @@ As you can see this stuff is also inspired by [Sam's blog post series](https://w
 
 [Domen Kožar](https://www.domenkozar.com/2014/03/11/why-puppet-chef-ansible-arent-good-enough-and-we-can-do-better/) can explain
 better than me why Nix is the way to go for package management. Nix is a functional programming language avoiding side-effects.
+
+## TODO
+
+https://github.com/NixOS/nixpkgs/issues/25264
