@@ -43,21 +43,26 @@ pkgs.stdenv.mkDerivation {
   shellHook = ''
     export PS1='\n\[\033[1;32m\][aws:\w]\$\[\033[0m\] '
     figlet "AWS" | lolcat --freq 0.5
+    echo "You now have aws and stack_master tools available in your shell."
+    echo "For web-login use https://myapps.microsoft.com"
+    echo "Regarding the login-prompt press CTRL-C if you have previously logged-in or ~/.aws/credentials still contains valid credentials."
 
     # if ~/.aws/config is pointing to nix store you can safely overwrite it
-    if [ -L  ~/.aws/config ] && $(${pkgs.coreutils}/bin/readlink -f ${awsConfig} | ${pkgs.gnugrep}/bin/grep -q '^/nix/store'); then
-      ${pkgs.coreutils}/bin/ln -fs ${awsConfig} ~/.aws/config  
+    if [ -L  ~/.aws/config ] && $(readlink -f ${awsConfig} | grep -q '^/nix/store'); then
+      ln -fs ${awsConfig} ~/.aws/config  
     else
       # Else backup and overwrite
-      ${pkgs.coreutils}/bin/mv ~/.aws/config ~/.aws/config.$$
+      mv ~/.aws/config ~/.aws/config.$$
       echo "Backed up ~/.aws/config to ~/.aws/config.$$"
-      ${pkgs.coreutils}/bin/ln -fs ${awsConfig} ~/.aws/config  
+      ln -fs ${awsConfig} ~/.aws/config  
     fi
     
     # Add autocompletion (assumption is this is bash)
-    ${python.packages."awscli"}/bin/aws_bash_completer
+    aws_bash_completer
 
     # Directly installing aws-azure-login through npm is a PITA
-    ${pkgs.docker}/bin/docker run --rm -it -v ~/.aws:/root/.aws -v ${awsConfig}:${awsConfig} dtjohnson/aws-azure-login
+    docker run --rm -it -v ~/.aws:/root/.aws -v ${awsConfig}:${awsConfig} dtjohnson/aws-azure-login
+   
+    aws sts get-caller-identity
   '';
 }
