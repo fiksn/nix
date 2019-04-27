@@ -14,7 +14,7 @@ in
   boot.initrd.luks.devices = [
     {
       name = "root";
-      device = "/dev/disk/by-uuid/${data.diskuuid}"
+      device = "/dev/disk/by-uuid/${data.diskuuid}";
       preLVM = true;
       allowDiscards = true;
     }
