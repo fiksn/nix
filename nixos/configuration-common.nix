@@ -9,12 +9,12 @@ in
     [ 
       ./x.nix
       ./virtualization.nix
-    ];
+    ] ++ (if data.zsh then [ ./zsh.nix ] else []);
 
   boot.initrd.luks.devices = [
     {
       name = "root";
-      device = "/dev/disk/by-uuid/644e1f44-c76b-4cb8-9c53-485d7c006d64";
+      device = "/dev/disk/by-uuid/${data.diskuuid}"
       preLVM = true;
       allowDiscards = true;
     }
@@ -35,6 +35,11 @@ in
 
   powerManagement.enable = true;
   hardware.bluetooth.enable = true;
+  hardware.pulseaudio = {
+    enable = true;
+    support32Bit = true;
+  };
+  hardware.opengl.driSupport32Bit = true; 
 
   networking.hostName = "present";
  
@@ -48,11 +53,15 @@ in
     forwardX11 = true;
     openFirewall = true;
   };
-
-  hardware.pulseaudio = {
+  
+  # gnupg agent
+  programs.gnupg.agent = {
     enable = true;
-    support32Bit = true;
+    enableSSHSupport = true;
   };
+
+  programs.sysdig.enable = true;
+  programs.tmux.enable = true;
 
   users.users.${data.username} = {
     isNormalUser = true;
@@ -60,7 +69,7 @@ in
     createHome = true;
     description = "Gregor";
     useDefaultShell = false;
-    shell = "/run/current-system/sw/bin/zsh";
+    shell = (if data.zsh then "/run/current-system/sw/bin/zsh" else pkgs.shadow);
     openssh.authorizedKeys.keys = [ 
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJAMaDaMzVzsgxq64VQ3YTeBfENo96zK56ld0OU/jgi1"
     ];
@@ -79,16 +88,13 @@ in
     ];
   };
 
-  environment.variables = { EDITOR = "vim"; };
-  time.timeZone = "Europe/Ljubljana";
- 
-  programs.zsh.enable = true;
-  programs.zsh.enableCompletion = true;
-  #environment.systemPackages = with pkgs; [ zsh zsh-git-prompt oh-my-zsh ] ++ environment.systemPackages;
-  environment.shells = [
-    "/run/current-system/sw/bin/zsh"
-  ];
+  #environment.variables = { EDITOR = "vim"; };
+  programs.vim.defaultEditor = true;
 
+  time.timeZone = "Europe/Ljubljana";
+  i18n.defaultLocale = "sl_SI.UTF-8";
+  i18n.consoleKeyMap = "sl";
+ 
 
   security.sudo = {
     enable = true;
@@ -117,6 +123,7 @@ in
       nmap
       ntp
       openssl
+      pssh
       pv
       pwgen
       s3fs
@@ -142,19 +149,15 @@ in
 
   nix.package = pkgs.nixUnstable;
   nix.useSandbox = true;
-  nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.allowBroken = true;
-  nixpkgs.config.pulseaudio = true;
-  nixpkgs.config.dmenu.enableXft = true;
 
-
-  hardware.opengl.driSupport32Bit = true; 
-
-  # gnupg agent
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
+  nixpkgs.config = {
+    allowUnfree = true;
+    allowBroken = true;
+    pulseaudio = true;
+    dmenu.enableXft = true;
   };
+
+
 
   # automatic gc
   nix.gc = {
@@ -166,7 +169,7 @@ in
   services.nixosManual.showManual = false;
   documentation.man.enable = true;
 
-  # Disable the infamous systemd screen/tmux killer
+  # disable the infamous systemd screen/tmux killer
   services.logind.extraConfig = ''
     KillUserProcesses=no
   '';
