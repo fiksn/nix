@@ -135,6 +135,10 @@ in
       unzip
       vim
       wget
+      
+      ntfs3g
+      rsync
+      iotop
 
   ] ++ (if data.gui then with pkgs; [
       gnome3.gnome-screenshot
