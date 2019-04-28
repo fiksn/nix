@@ -2,7 +2,6 @@
 
 let 
    pkgs = import <nixpkgs> {};
-   python = import ./requirements.nix { inherit pkgs; };
    gems = pkgs.bundlerEnv {
      name = "aws-gems";
      ruby = pkgs.ruby;
@@ -37,7 +36,7 @@ pkgs.stdenv.mkDerivation {
     pkgs.docker
     pkgs.ruby
     gems
-    python.packages."awscli"
+    pkgs.awscli
   ];
 
   shellHook = ''
@@ -56,9 +55,6 @@ pkgs.stdenv.mkDerivation {
       echo "Backed up ~/.aws/config to ~/.aws/config.$$"
       ln -fs ${awsConfig} ~/.aws/config  
     fi
-    
-    # Add autocompletion (assumption is this is bash)
-    aws_bash_completer
 
     # Directly installing aws-azure-login through npm is a PITA
     docker run --rm -it -v ~/.aws:/root/.aws -v ${awsConfig}:${awsConfig} dtjohnson/aws-azure-login
