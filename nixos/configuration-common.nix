@@ -57,6 +57,11 @@ in
     openFirewall = true;
   };
   
+  services.ntp = {
+    enable = true;
+    servers = [ "ntp1.arnes.si" "ntp2.arnes.si" ];
+  };
+  
   # gnupg agent
   programs.gnupg.agent = {
     enable = true;
@@ -66,6 +71,7 @@ in
   programs.sysdig.enable = true;
   programs.tmux.enable = true;
 
+  users.mutableUsers = false;
   users.users.${data.username} = {
     isNormalUser = true;
     home = "/home/${data.username}";
@@ -95,8 +101,11 @@ in
   programs.vim.defaultEditor = true;
 
   time.timeZone = "Europe/Ljubljana";
-  i18n.defaultLocale = "sl_SI.UTF-8";
-  #i18n.consoleKeyMap = "sl";
+  i18n = {
+    consoleFont = "lat9w-16";
+    consoleKeyMap = "slovene";
+    defaultLocale = "sl_SI.UTF-8";
+  };
 
   security.sudo = {
     enable = true;

@@ -54,6 +54,7 @@ in {
     xserver = {
       enable = true;
       libinput.enable = true;
+      layout = "si";
       desktopManager = {
 	default = "xfce";
 	xterm.enable = false;
