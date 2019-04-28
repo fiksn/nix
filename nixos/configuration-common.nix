@@ -9,7 +9,10 @@ in
     [ 
       ./x.nix
       ./virtualization.nix
-    ] ++ (if data.zsh then [ ./zsh.nix ] else []);
+    ] 
+     ++ (if data.zsh then [ ./zsh.nix ] else [])
+     ++ (if data.kubernetes then [ ./kubernetes.nix ] else [])
+    ;
 
   boot.initrd.luks.devices = [
     {
@@ -93,8 +96,7 @@ in
 
   time.timeZone = "Europe/Ljubljana";
   i18n.defaultLocale = "sl_SI.UTF-8";
-  i18n.consoleKeyMap = "sl";
- 
+  #i18n.consoleKeyMap = "sl";
 
   security.sudo = {
     enable = true;
@@ -139,6 +141,8 @@ in
       ntfs3g
       rsync
       iotop
+      nixops
+      disnix
 
   ] ++ (if data.gui then with pkgs; [
       gnome3.gnome-screenshot

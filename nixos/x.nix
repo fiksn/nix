@@ -43,6 +43,7 @@ in {
       "i3/status"                 .source = ./config/i3status;
       "i3/status-netns"           .source = ./config/i3status-netns;
       "X11/xresources"            .source = ./config/xresources;
+      "display.sh"                .source = ./config/display.sh;
     };
     systemPackages = with pkgs; [ dzen2 gnupg ];
   };

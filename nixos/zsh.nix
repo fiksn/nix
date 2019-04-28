@@ -5,7 +5,7 @@
 {
   programs.zsh.enable = true;
   programs.zsh.enableCompletion = true;
-  environment.systemPackages = with pkgs; [ zsh zsh-git-prompt oh-my-zsh ] ++ environment.systemPackages;
+  environment.systemPackages = with pkgs; [ zsh zsh-git-prompt oh-my-zsh ];
   environment.shells = [
     "/run/current-system/sw/bin/zsh"
   ];

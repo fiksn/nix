@@ -5,4 +5,5 @@
   ssd = true;
   gui = true;
   zsh = true;
+  kubernetes = true;
 }

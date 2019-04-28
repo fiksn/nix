@@ -7,6 +7,8 @@ docutils==0.14
 jmespath==0.9.4
 pyasn1==0.4.5
 python-dateutil==2.8.0
+# https://github.com/aws/aws-cli/issues/3828
+# PyYAML>=3.10,<=3.13, can't do anything
 PyYAML==3.13
 rsa==3.4.2
 s3transfer==0.2.0

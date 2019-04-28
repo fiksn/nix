@@ -59,6 +59,7 @@ bindsym Control+Print exec gnome-screenshot -i
 bindsym $mod+Control+l exec i3lock
 
 
+bindsym $mod+p exec --no-startup-id /etc/display.sh 
 # change focus
 bindsym $mod+j focus left
 bindsym $mod+k focus down
