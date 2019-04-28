@@ -60,6 +60,14 @@ bindsym $mod+Control+l exec i3lock
 
 
 bindsym $mod+p exec --no-startup-id /etc/display.sh 
+
+# lock screen
+bindsym $mod+Delete exec --no-startup-id "i3lock -c 000000"
+# lock screen and suspend
+bindsym $mod+End exec --no-startup-id "i3lock -c 000000 && systemctl suspend"
+# lock and hibernate
+bindsym $mod+Insert exec --no-startup-id "i3lock -c 000000 && systemctl hibernate"
+
 # change focus
 bindsym $mod+j focus left
 bindsym $mod+k focus down
