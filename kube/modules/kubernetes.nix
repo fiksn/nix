@@ -1,9 +1,9 @@
-{ config, lib, pkgs, kubenix, ... }:
+{ config, pkgs, lib, kubenix, dockerImage, ... }:
 
 with lib;
 
 let
-  nginx = pkgs.callPackage ./image.nix { };
+  nginx = dockerImage;
 in {
   imports = with kubenix.modules; [ k8s docker ];
 

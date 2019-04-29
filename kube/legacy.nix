@@ -13,7 +13,7 @@ let
   pullSecretName = "${app}-gitlab-registry";
 in
 {
-  kubernetes.version = "1.13";
+  kubernetes.version = "1.11";
 
   kubernetes.resources.deployments."${app}-server" = {
     metadata.labels = labels;

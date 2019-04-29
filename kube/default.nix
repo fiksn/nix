@@ -10,7 +10,7 @@ let
   };
 
   /* OOOLD
-  configuration = import ./configuration.nix {};
+  configuration = import ./legacy.nix {};
   manifest = kubenix.buildResources {
     inherit configuration;
     writeJSON = false;
@@ -19,8 +19,9 @@ let
 
   manifest = kubenix.evalModules {
     modules = [
-      ./module.nix 
-#{ docker.registry.url = "dockerhub.com"; }
+      ./modules/kubernetes.nix
+      { docker.registry.url = "dockerhub.com"; }
+      { _module.args.dockerImage = appImage; }
     ];
   };
 
