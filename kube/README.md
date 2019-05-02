@@ -2,7 +2,6 @@
 
 I want to try [Kubenix](https://github.com/xtruder/kubenix) and [Kubenix modules](https://github.com/xtruder/kubenix-modules/).
 
-
 ## Intro 
 
 The idea is very simple, Kubenix is a Nix module generated from swagger k8s definitions. So no more editing ugly YAML files by hand.
@@ -35,4 +34,16 @@ Of course this is just a toy example that is ugly. Will refactor to options even
 
 Can be run with:
 ```nix eval -f ./. --json foo```
+
+```
+nix run -f ./. pushDockerImages -c copy-docker-images
+```
+
+Test will spawn vm with kubernetes and run test script, which checks if everyting
+works as expected.
+
+```
+nix build -f ./. test-script
+cat result | jq '.'
+```
 

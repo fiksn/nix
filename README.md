@@ -63,3 +63,25 @@ believe in the long term the simple composability pays off.
 Testing is currently done like in this suggestion 
 https://github.com/NixOS/nixpkgs/issues/25264
 and only with nix-instantiate, perhaps we need to change that?
+
+Try [nix-darwin](https://github.com/LnL7/nix-darwin) and [home-manager](https://github.com/rycee/home-manager)
+
+## CI
+
+GitLab
+```
+target:
+  image: nixos/nix
+  variables:
+    NIX_PATH: "nixpkgs=https://github.com/NixOS/nixpkgs-channels/archive/nixos-18.09.tar.gz"
+  script:
+    - nix-build ...
+```
+
+Travis
+
+```
+language: nix
+env:
+  - NIX_PATH="nixpkgs=https://github.com/NixOS/nixpkgs-channels/archive/nixos-18.09.tar.gz"
+```

@@ -1,13 +1,10 @@
-{ config, pkgs, lib, kubenix, dockerImage, ... }:
+{ config, pkgs, lib, kubenix, ... }:
 
 with lib;
+{
 
-let
-  nginx = dockerImage;
-in {
-  imports = with kubenix.modules; [ k8s docker ];
+  imports = with kubenix.modules; [ k8s ];
 
-  docker.images.nginx.image = nginx;
   kubernetes.version = "1.13";
 
   kubernetes.api.deployments.nginx = {
@@ -19,7 +16,7 @@ in {
         spec = {
           securityContext.fsGroup = 1000;
           containers.nginx = {
-            image = config.docker.images.nginx.path;
+            image = config.docker.images.test.path;
             imagePullPolicy = "IfNotPresent";
             volumeMounts."/etc/nginx".name = "config";
             volumeMounts."/var/lib/html".name = "static";
