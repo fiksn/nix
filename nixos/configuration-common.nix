@@ -17,6 +17,10 @@ in
   i3-special.enable = true;
   myzsh.enable = true;
   myvirt.enable = true;
+  # Finger print reader
+  services.fprintd.enable = true;
+  security.pam.services.login.fprintAuth = true;
+  security.pam.services.xscreensaver.fprintAuth = true;
   #services.kubernetes.roles = ["master" "node"];
 
   boot.initrd.luks.devices = [
