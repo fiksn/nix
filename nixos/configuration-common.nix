@@ -1,6 +1,8 @@
 # /etc/nixos/configuration-common.nix
 
-{ config, pkgs, callPackage, ... }:
+{ config, pkgs, callPackage, lib, ... }:
+
+with lib;
 
 let data = import ./data.nix;
 in
@@ -81,12 +83,12 @@ in
     createHome = true;
     description = "Gregor";
     useDefaultShell = false;
-    shell = (if data.zsh then "/run/current-system/sw/bin/zsh" else pkgs.shadow);
+    shell = (if config.myzsh.enable then "/run/current-system/sw/bin/zsh" else pkgs.shadow);
     openssh.authorizedKeys.keys = [ 
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJAMaDaMzVzsgxq64VQ3YTeBfENo96zK56ld0OU/jgi1"
     ];
     
-    packages = with pkgs; (if data.gui then [ slack vscode-with-extensions chromium firefox thunderbird libreoffice jetbrains.idea-community adobe-reader mplayer ] else []); 
+    packages = with pkgs; (if config.i3-special.enable then [ slack vscode-with-extensions chromium firefox thunderbird libreoffice jetbrains.idea-community adobe-reader mplayer ] else []); 
 
     extraGroups= [
       "audio"

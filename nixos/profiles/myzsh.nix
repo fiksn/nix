@@ -1,10 +1,12 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
-{
+with lib;
+
 let
   cfg = config.myzsh;
 in 
-  options.myzsh {
+{
+  options.myzsh = {
      enable = mkOption {
         default = false;
         description = ''
@@ -19,7 +21,7 @@ in
       enable = true;
       enableCompletion = true;
       ohMyZsh.enable = true;
-    }
+    };
 
     environment.systemPackages = with pkgs; [ zsh-git-prompt ];
     environment.shells = [

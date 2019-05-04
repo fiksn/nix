@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 with lib;
 
@@ -35,8 +35,9 @@ let
       wantedBy = [ "display-manager.service" ];
       after = [ "display-manager.service" ];
     };
-in {
-  options.i3-special {
+in 
+{
+  options.i3-special = {
      enable = mkOption {
         default = false;
         description = ''
@@ -44,20 +45,23 @@ in {
         '';
         type = types.bool;
       }; 
-  }
+  };
+
   config = mkIf cfg.enable {
 
-    environment.systemPackages = with pkgs; [
-      gnome3.gnome-screenshot
-      gparted
-      wireshark-gtk
-      xorg.xbacklight
-      pavucontrol
-      playerctl
-      scrot 
-    ];
-
     environment = {
+      systemPackages = with pkgs; [
+        gnome3.gnome-screenshot
+        gparted
+        wireshark-gtk
+        xorg.xbacklight
+        pavucontrol
+        playerctl
+        scrot 
+        dzen2
+        gnupg
+      ];
+
       etc = {
 	"compton/inverted"          .source = ./config/compton-inverted;
 	"compton/noninverted"       .source = ./config/compton-noninverted;
@@ -68,7 +72,6 @@ in {
 	"X11/xresources"            .source = ./config/xresources;
 	"display.sh"                .source = ./config/display.sh;
       };
-      systemPackages = with pkgs; [ dzen2 gnupg ];
     };
 
     environment.pathsToLink = [ "/libexec" ];
