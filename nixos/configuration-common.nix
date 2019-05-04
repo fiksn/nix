@@ -17,7 +17,7 @@ in
   i3-special.enable = true;
   myzsh.enable = true;
   myvirt.enable = true;
-  services.kubernetes.roles = ["master" "node"];
+  #services.kubernetes.roles = ["master" "node"];
 
   boot.initrd.luks.devices = [
     {
@@ -76,7 +76,7 @@ in
   programs.sysdig.enable = true;
   programs.tmux.enable = true;
 
-  users.mutableUsers = false;
+  users.mutableUsers = true;
   users.users.${data.username} = {
     isNormalUser = true;
     home = "/home/${data.username}";
