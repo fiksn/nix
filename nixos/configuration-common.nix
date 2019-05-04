@@ -7,12 +7,15 @@ in
 {
   imports =
     [ 
-      ./x.nix
-      ./virtualization.nix
-    ] 
-     ++ (if data.zsh then [ ./zsh.nix ] else [])
-     ++ (if data.kubernetes then [ ./kubernetes.nix ] else [])
-    ;
+      ./profiles/virtualization.nix
+      ./profiles/myzsh.nix
+      ./profiles/i3-special.nix
+    ] ;
+
+  i3-special.enable = true;
+  myzsh.enable = true;
+  myvirt.enable = true;
+  services.kubernetes.roles = ["master" "node"];
 
   boot.initrd.luks.devices = [
     {
@@ -152,16 +155,7 @@ in
       iotop
       nixops
       disnix
-
-  ] ++ (if data.gui then with pkgs; [
-      gnome3.gnome-screenshot
-      gparted
-      wireshark-gtk
-      xorg.xbacklight
-      pavucontrol
-      playerctl
-      scrot 
-  ] else []);
+  ];
 
 
   nix.package = pkgs.nixUnstable;
@@ -173,8 +167,6 @@ in
     pulseaudio = true;
     dmenu.enableXft = true;
   };
-
-
 
   # automatic gc
   nix.gc = {

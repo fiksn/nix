@@ -38,7 +38,7 @@ let
 
     opsPackages = super.lib.hiPrio (super.buildEnv {
       name = "ops-packages";
-      paths = with super; [ kubernetes minikube vault redis mongodb mysql57 ];
+      paths = with super; [ kubectl influxdb kubernetes-helm kubectx vault redis mongodb mysql57 ];
     });
   };
 in

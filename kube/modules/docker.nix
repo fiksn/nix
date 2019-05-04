@@ -4,7 +4,7 @@ with lib;
 {
   imports = with kubenix.modules; [ docker ];
 
-  docker.registry.url = "dockerhub.com";
+  #docker.registry.url = "dockerhub.com";
 
   docker.images.test.image = pkgs.dockerTools.buildLayeredImage {
     name = "hello-app";
