@@ -47,6 +47,7 @@ pkgs.stdenv.mkDerivation {
     echo "Regarding the login-prompt press CTRL-C if you have previously logged-in or ~/.aws/credentials still contains valid credentials."
 
     # if ~/.aws/config is pointing to nix store you can safely overwrite it
+    mkdir -p ~/.aws
     if [ -L  ~/.aws/config ] && $(readlink -f ${awsConfig} | grep -q '^/nix/store'); then
       ln -fs ${awsConfig} ~/.aws/config  
     else
