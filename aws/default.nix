@@ -50,11 +50,15 @@ pkgs.stdenv.mkDerivation {
     mkdir -p ~/.aws
     if [ -L  ~/.aws/config ] && $(readlink -f ${awsConfig} | grep -q '^/nix/store'); then
       ln -fs ${awsConfig} ~/.aws/config  
-    else
+    elif [ -f ~/.aws/config ]
       # Else backup and overwrite
       mv ~/.aws/config ~/.aws/config.$$
       echo "Backed up ~/.aws/config to ~/.aws/config.$$"
       ln -fs ${awsConfig} ~/.aws/config  
+    else
+      # No config file
+      echo "We will create a ~/.aws/config pointing to nix store"
+      ln -fs ${awsConfig} ~/.aws/config
     fi
 
     # Directly installing aws-azure-login through npm is a PITA
