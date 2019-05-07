@@ -50,7 +50,7 @@ pkgs.stdenv.mkDerivation {
     mkdir -p ~/.aws
     if [ -L  ~/.aws/config ] && $(readlink -f ${awsConfig} | grep -q '^/nix/store'); then
       ln -fs ${awsConfig} ~/.aws/config  
-    elif [ -f ~/.aws/config ]
+    elif [ -f ~/.aws/config ]; then
       # Else backup and overwrite
       mv ~/.aws/config ~/.aws/config.$$
       echo "Backed up ~/.aws/config to ~/.aws/config.$$"

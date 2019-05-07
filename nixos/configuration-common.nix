@@ -17,11 +17,15 @@ in
   i3-special.enable = true;
   myzsh.enable = true;
   myvirt.enable = true;
-  # Finger print reader
+  
+  # Fingerprint reader (unfortunately drivers are not supported)
   services.fprintd.enable = true;
   security.pam.services.login.fprintAuth = true;
   security.pam.services.xscreensaver.fprintAuth = true;
+  
+  # Test
   #services.kubernetes.roles = ["master" "node"];
+  #services.kubernetes.masterAddress = "127.0.0.1";
 
   boot.initrd.luks.devices = [
     {
@@ -128,6 +132,8 @@ in
       coreutils
       curl
       dos2unix
+      #envsubst
+      file
       fuse_exfat
       gcc
       gdb
@@ -137,6 +143,7 @@ in
       htop
       jhead
       jq
+      ltrace
       mosh
       netcat
       ngrep
@@ -148,6 +155,7 @@ in
       pwgen
       s3fs
       screen
+      strace
       sshfs
       tig
       tmux
