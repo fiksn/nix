@@ -81,6 +81,7 @@ pkgs.stdenv.mkDerivation {
     export OS_IDENTITY_API_VERSION=3
     alias proxy-on=". os-proxy-on"
     alias proxy-off=". os-proxy-off"
+    alias osmr='openstack server list --long -c Name -c Host -c Flavor -c "Availabilty Zone" -c Status -c Networks'
     # openstack endpoint list -f value | grep zrh | cut -d" " -f 7 | sed 's/http.*:\/\///g' | cut -d '/' -f 1 | sort | uniq
     export PS1='\n\[\033[1;32m\][${project}-openstack:\w]\$\[\033[0m\] '
     figlet "$(echo ${project} | tr '[:lower:]' '[:upper:]') OpenStack" | lolcat --freq 0.5
