@@ -65,5 +65,6 @@ pkgs.stdenv.mkDerivation {
     docker run --rm -it -v ~/.aws:/root/.aws -v ${awsConfig}:${awsConfig} dtjohnson/aws-azure-login
    
     aws sts get-caller-identity
+    aws iam get-user
   '';
 }

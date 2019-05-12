@@ -11,6 +11,7 @@ in
     [ 
       ./profiles/virtualization.nix
       ./profiles/myzsh.nix
+      ./profiles/mynixops.nix
       ./profiles/i3-special.nix
     ] ;
 
@@ -167,7 +168,6 @@ in
       ntfs3g
       rsync
       iotop
-      nixops
       disnix
   ];
 
