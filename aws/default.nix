@@ -2,6 +2,7 @@
 
 let 
    pkgs = import <nixpkgs> {};
+   python = import ./requirements.nix { inherit pkgs; };
    gems = pkgs.bundlerEnv {
      name = "aws-gems";
      ruby = pkgs.ruby;
@@ -15,7 +16,8 @@ let
        [default]
        region=eu-central-1
        azure_tenant_id=SportradarAG.onmicrosoft.com
-       azure_app_id_uri=a43d895e-e3f3-42b9-bb13-3191f61ef11d
+       #azure_app_id_uri=a43d895e-e3f3-42b9-bb13-3191f61ef11d
+       azure_app_id_uri=2cd75673-2d37-4a7c-ac4c-5e163113adff
        azure_default_username=${username}@sportradar.com
        azure_default_role_arn=
        azure_default_duration_hours=1
@@ -36,7 +38,8 @@ pkgs.stdenv.mkDerivation {
     pkgs.docker
     pkgs.ruby
     gems
-    pkgs.awscli
+    python.packages."boto3"
+    python.packages."awscli"
   ];
 
   shellHook = ''

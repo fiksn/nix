@@ -11,10 +11,12 @@ in
     [ 
       ./profiles/virtualization.nix
       ./profiles/myzsh.nix
-      ./profiles/mynixops.nix
       ./profiles/i3-special.nix
+      # or just use pkgs.nixopsUnstable
+      ./profiles/mynixops.nix
     ] ;
 
+  mynixops.enable = true;
   i3-special.enable = true;
   myzsh.enable = true;
   myvirt.enable = true;
