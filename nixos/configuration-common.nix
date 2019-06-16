@@ -25,8 +25,12 @@ in
   security.pam.services.xscreensaver.fprintAuth = true;
   
   # Test
-  #services.kubernetes.roles = ["master" "node"];
-  #services.kubernetes.masterAddress = "127.0.0.1";
+  services.kubernetes = {
+    roles = ["master" "node"];
+    masterAddress = "127.0.0.1";
+    apiserverAddress = "127.0.0.1";
+    easyCerts = true;
+  };
 
   boot.initrd.luks.devices = [
     {

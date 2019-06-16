@@ -53,13 +53,16 @@ in
       systemPackages = with pkgs; [
         gnome3.gnome-screenshot
         gparted
-        wireshark-gtk
+        wireshark-qt
         xorg.xbacklight
         pavucontrol
         playerctl
         scrot 
         dzen2
         gnupg
+        rofi
+        keepnote
+        gnome3.zenity
       ];
 
       etc = {
