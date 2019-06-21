@@ -45,6 +45,8 @@ in
 
   boot.cleanTmpDir = true;
   boot.kernelPackages = pkgs.linuxPackages_latest;
+  # Or else I keep getting Corrected error dmesg spam
+  boot.kernelParams = [ "pci=noaer" ];
   boot.kernel.sysctl = {
     "net.ipv4.ip_forward" = 1;
     "vm.overcommit_memory" = 1;
