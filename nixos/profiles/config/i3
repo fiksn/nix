@@ -77,7 +77,8 @@ bindsym XF86AudioPause exec playerctl pause
 bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
 
-bindsym Print exec scrot '%Y-%m-%d-%s_screenshot$wx$h.jpg' -e 'mv $f ~/Pictures/'
+bindsym Print exec scrot -z '%Y-%m-%d-%s_screenshot$wx$h.jpg' -e 'mv $f ~/Pictures/'
+bindsym Shift+Print exec scrot -uz '%Y-%m-%d-%s_screenshot$wx$h.jpg' -e 'mv $f ~/Pictures/'
 bindsym Control+Print exec gnome-screenshot -i
 
 bindsym $mod+Shift+p exec --no-startup-id /etc/display.sh 

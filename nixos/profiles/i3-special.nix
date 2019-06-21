@@ -63,6 +63,7 @@ in
         rofi
         keepnote
         gnome3.zenity
+        xfce.xfce4-taskmanager
       ];
 
       etc = {

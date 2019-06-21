@@ -25,12 +25,12 @@ in
   security.pam.services.xscreensaver.fprintAuth = true;
   
   # Test
-  services.kubernetes = {
-    roles = ["master" "node"];
-    masterAddress = "127.0.0.1";
-    apiserverAddress = "127.0.0.1";
-    easyCerts = true;
-  };
+  #services.kubernetes = {
+  #  roles = ["master" "node"];
+  #  masterAddress = "127.0.0.1";
+  #  apiserverAddress = "127.0.0.1";
+  #  easyCerts = true;
+  #};
 
   boot.initrd.luks.devices = [
     {
@@ -44,7 +44,7 @@ in
   fileSystems."/".options = if data.ssd then [ "noatime" "nodiratime" "discard" ] else [];
 
   boot.cleanTmpDir = true;
-  #boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernel.sysctl = {
     "net.ipv4.ip_forward" = 1;
     "vm.overcommit_memory" = 1;
@@ -86,7 +86,7 @@ in
     enableSSHSupport = true;
   };
 
-  programs.sysdig.enable = true;
+  #programs.sysdig.enable = true;
   programs.tmux.enable = true;
 
   users.mutableUsers = true;
@@ -173,6 +173,9 @@ in
       rsync
       iotop
       disnix
+      dhcp
+      telnet
+      irssi
   ];
 
 
