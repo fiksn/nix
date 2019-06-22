@@ -60,10 +60,8 @@ in
         scrot 
         dzen2
         gnupg
-        rofi
         keepnote
-        gnome3.zenity
-        xfce.xfce4-taskmanager
+        lxrandr
       ];
 
       etc = {
@@ -80,7 +78,11 @@ in
 
     environment.pathsToLink = [ "/libexec" ];
 
+    programs.dconf.enable = true;
+
     services = {
+      dbus.packages = [ pkgs.gnome3.dconf ];
+
       xserver = {
 	enable = true;
 	libinput.enable = true;
@@ -104,6 +106,9 @@ in
 	    i3lock #default i3 screen locker
 	    i3blocks #if you are planning on using i3blocks over i3status
 	    i3-gaps
+            rofi
+            gnome3.zenity
+            xfce.xfce4-taskmanager
 	  ];
 	};
       };

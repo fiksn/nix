@@ -82,7 +82,8 @@ bindsym Shift+Print exec scrot -uz '%Y-%m-%d-%s_screenshot$wx$h.jpg' -e 'mv $f ~
 bindsym Control+Print exec gnome-screenshot -i
 
 bindsym $mod+Shift+p exec --no-startup-id /etc/display.sh 
-bindsym $mod+p exec xfce4-display-settings
+#bindsym $mod+p exec xfce4-display-settings
+bindsym $mod+p exec lxrandr
 bindsym $mod+q exec zenity --calendar
 
 bindsym $mod+End mode "$mode_system"
