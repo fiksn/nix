@@ -38,7 +38,9 @@ pkgs.stdenv.mkDerivation {
     pkgs.docker
     pkgs.ruby
     gems
+    python.packages."beautifulsoup4"
     python.packages."boto3"
+    python.packages."boto"
     python.packages."awscli"
   ];
 

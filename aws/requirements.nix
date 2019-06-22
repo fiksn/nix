@@ -2,7 +2,7 @@
 # See more at: https://github.com/garbas/pypi2nix
 #
 # COMMAND:
-#   pypi2nix -V 3.7 -e beautifulsoup4 -e boto3 -e awscli -E python37Packages.setuptools -E python37Packages.setuptools_scm -E python37Packages.setuptools-git -E python37Packages.vcversioner
+#   pypi2nix -V 3.7 -e beautifulsoup4 -e boto -e boto3 -e awscli -E python37Packages.setuptools -E python37Packages.setuptools_scm -E python37Packages.setuptools-git -E python37Packages.vcversioner
 #
 
 { pkgs ? import <nixpkgs> {},
@@ -108,10 +108,10 @@ let
     };
 
     "awscli" = python.mkDerivation {
-      name = "awscli-1.16.170";
+      name = "awscli-1.16.171";
       src = pkgs.fetchurl {
-        url = "https://files.pythonhosted.org/packages/3e/f6/ab0953739ca19152f52b2da153158989fc79200b297ebc2c35d3f41f614c/awscli-1.16.170.tar.gz";
-        sha256 = "227976b4fe4e5e4c896b14573d5e900f1cfe096e35b78f37e4c8bb56a330708a";
+        url = "https://files.pythonhosted.org/packages/dc/eb/46de39527c3a6ebfab3a18c113e5b5f444ef22a57369248f7e207fc58776/awscli-1.16.171.tar.gz";
+        sha256 = "9b8cccfb4d7e3788b2f492cdad587dec390eadda76be9245c0bc02e0f56747e5";
       };
       doCheck = commonDoCheck;
       checkInputs = commonBuildInputs ++ [ ];
@@ -154,11 +154,30 @@ let
       };
     };
 
-    "boto3" = python.mkDerivation {
-      name = "boto3-1.9.160";
+    "boto" = python.mkDerivation {
+      name = "boto-2.49.0";
       src = pkgs.fetchurl {
-        url = "https://files.pythonhosted.org/packages/31/d8/598228612d041a5d8cfbbc93c5eba9aba9267129287b14e5f375144f88c2/boto3-1.9.160.tar.gz";
-        sha256 = "2ea4710257e9b451db33cc6883146be7ae2acd6bd72e77c8bc514c54766db0e3";
+        url = "https://files.pythonhosted.org/packages/c8/af/54a920ff4255664f5d238b5aebd8eedf7a07c7a5e71e27afcfe840b82f51/boto-2.49.0.tar.gz";
+        sha256 = "ea0d3b40a2d852767be77ca343b58a9e3a4b00d9db440efb8da74b4e58025e5a";
+      };
+      doCheck = commonDoCheck;
+      checkInputs = commonBuildInputs ++ [ ];
+      buildInputs = commonBuildInputs ++ [ ];
+      nativeBuildInputs = commonBuildInputs ++ [ ];
+      propagatedNativeBuildInputs = commonBuildInputs ++ [ ];
+      propagatedBuildInputs = [ ];
+      meta = with pkgs.stdenv.lib; {
+        homepage = "https://github.com/boto/boto/";
+        license = licenses.mit;
+        description = "Amazon Web Services Library";
+      };
+    };
+
+    "boto3" = python.mkDerivation {
+      name = "boto3-1.9.161";
+      src = pkgs.fetchurl {
+        url = "https://files.pythonhosted.org/packages/83/1c/7a811e71c9b9d5dc81025d24fe9286564bc42e08a2300e92909602fa9b98/boto3-1.9.161.tar.gz";
+        sha256 = "352a5a8bd26ba771ad86ec23ab632a9402fab2d9609243011253241ae1f5889d";
       };
       doCheck = commonDoCheck;
       checkInputs = commonBuildInputs ++ [ ];
@@ -178,10 +197,10 @@ let
     };
 
     "botocore" = python.mkDerivation {
-      name = "botocore-1.12.160";
+      name = "botocore-1.12.161";
       src = pkgs.fetchurl {
-        url = "https://files.pythonhosted.org/packages/e9/a6/b88ad367a9b1ec859851a4923211debf0e850e614c103bece7d68b24d160/botocore-1.12.160.tar.gz";
-        sha256 = "17b3edcee0e891d85f6d36dc25bf3e33b5d7eb55d327832904a2b12eb66150a2";
+        url = "https://files.pythonhosted.org/packages/71/aa/d85648d86c5eef780948f41891886590610aea5639f3f166cb8186949256/botocore-1.12.161.tar.gz";
+        sha256 = "424c01d241c40e29bf90cc939450676a30ef1a54ee7a219bb2bc6bb876eba7b0";
       };
       doCheck = commonDoCheck;
       checkInputs = commonBuildInputs ++ [ ];
@@ -320,10 +339,10 @@ let
     };
 
     "s3transfer" = python.mkDerivation {
-      name = "s3transfer-0.2.0";
+      name = "s3transfer-0.2.1";
       src = pkgs.fetchurl {
-        url = "https://files.pythonhosted.org/packages/43/22/37b9aaf3969628a25b3b921612139ebc5b8dc26cabb9873c356e1ad2ce2e/s3transfer-0.2.0.tar.gz";
-        sha256 = "f23d5cb7d862b104401d9021fc82e5fa0e0cf57b7660a1331425aab0c691d021";
+        url = "https://files.pythonhosted.org/packages/39/12/150cd55c606ebca6725683642a8e7068cd6af10f837ce5419a9f16b7fb55/s3transfer-0.2.1.tar.gz";
+        sha256 = "6efc926738a3cd576c2a79725fed9afde92378aa5c6a957e3af010cb019fac9d";
       };
       doCheck = commonDoCheck;
       checkInputs = commonBuildInputs ++ [ ];

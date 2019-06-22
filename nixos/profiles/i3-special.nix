@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, user ? "fiction", ... }:
 
 with lib;
 
@@ -22,7 +22,7 @@ let
       };
       serviceConfig = {
         Type = "simple";
-        User = "fiction";
+        User = $user;
         ExecStart = pkgs.writeScript name ''
             #! ${pkgs.bash}/bin/bash
             . ${config.system.build.setEnvironment}
@@ -88,6 +88,22 @@ in
 	libinput.enable = true;
 	layout = "si";
 	desktopManager = {
+	  session = [
+	    {
+	      name = "custom";
+	      start = ''
+		# Set background
+		${pkgs.feh}/bin/feh --bg-scale ${background-image}
+
+		# Load custom Xresources
+	        ${pkgs.xorg.xrdb}/bin/xrdb /etc/X11/xresources
+
+		# Start notifications
+		${pkgs.dunst}/bin/dunst -config /etc/dunst/dunstrc &"
+	      '';
+	    }
+	  ];
+
 	  default = "xfce";
 	  xterm.enable = false;
 	  xfce = {
