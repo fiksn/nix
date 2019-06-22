@@ -6,6 +6,7 @@
   programs.git = {
     enable = true;
     userName = "Gregor Pogačnik";
+    email = "1640719+fiksn@users.noreply.github.com";
   };
 
   services.redshift = {

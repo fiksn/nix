@@ -1,9 +1,9 @@
-{ config, pkgs, lib, user ? "fiction", ... }:
+{ config, pkgs, lib, username ? "fiction", ... }:
 
 with lib;
 
 let 
-    cfg = config.i3-special;
+    cfg = config.myi3;
     dunstrc = builtins.toFile "dunstrc" (pkgs.lib.readFile ./config/dunstrc);
     background-image = pkgs.fetchurl {
       url = "http://orig01.deviantart.net/1810/f/2012/116/a/4/tranquility_by_andreewallin-d4xjtd0.jpg";
@@ -22,7 +22,7 @@ let
       };
       serviceConfig = {
         Type = "simple";
-        User = $user;
+        User = "fiction";
         ExecStart = pkgs.writeScript name ''
             #! ${pkgs.bash}/bin/bash
             . ${config.system.build.setEnvironment}
@@ -37,7 +37,7 @@ let
     };
 in 
 {
-  options.i3-special = {
+  options.myi3 = {
      enable = mkOption {
         default = false;
         description = ''

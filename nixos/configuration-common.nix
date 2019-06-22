@@ -11,16 +11,18 @@ in
     [ 
       ./profiles/virtualization.nix
       ./profiles/myzsh.nix
-      ./profiles/i3-special.nix
+      ./profiles/myi3.nix
       # or just use pkgs.nixopsUnstable
       ./profiles/mynixops.nix
     ] ;
 
-  mynixops.enable = true;
-  i3-special.enable = true;
+  mynixops.enable = false;
+  myi3.enable = true;
   myzsh.enable = true;
   myvirt.enable = true;
   
+  nixpkgs = import ./nixpkgs;
+
   # Fingerprint reader (unfortunately drivers are not supported)
   services.fprintd.enable = true;
   security.pam.services.login.fprintAuth = true;
@@ -105,7 +107,7 @@ in
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJAMaDaMzVzsgxq64VQ3YTeBfENo96zK56ld0OU/jgi1"
     ];
     
-    packages = with pkgs; (if config.i3-special.enable then [ slack vscode-with-extensions chromium firefox thunderbird libreoffice jetbrains.idea-community adobe-reader mplayer ] else []); 
+    packages = with pkgs; (if config.myi3.enable then [ slack vscode-with-extensions chromium firefox thunderbird libreoffice jetbrains.idea-community adobe-reader mplayer ] else []); 
 
     extraGroups= [
       "audio"
@@ -185,13 +187,6 @@ in
 
   nix.package = pkgs.nixUnstable;
   nix.useSandbox = true;
-
-  nixpkgs.config = {
-    allowUnfree = true;
-    allowBroken = true;
-    pulseaudio = true;
-    dmenu.enableXft = true;
-  };
 
   # automatic gc
   nix.gc = {

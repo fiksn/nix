@@ -21,17 +21,17 @@ in
       enable = true;
       enableAutosuggestions = true;
       enableCompletion = true;
-      dotDir = ".config/zsh";
-      history = {
-	expireDuplicatesFirst = true;
-	extended = true;
-	ignoreDups = true;
-	path = ".config/zsh/history";
-	save = 1000000;
-	share = true;
-	size = 1000000;
-      };
-      oh-my-zsh = {
+      #dotDir = ".config/zsh";
+      #history = {
+	#expireDuplicatesFirst = true;
+	#extended = true;
+	#ignoreDups = true;
+	#path = ".config/zsh/history";
+	#save = 1000000;
+	#share = true;
+	#size = 1000000;
+      #};
+      ohMyZsh = {
 	enable = true;
 	plugins = [
 	  "common-aliases"
@@ -51,13 +51,13 @@ in
 	];
 	theme = "../../../../../..${pkgs.powerlevel10k}/powerlevel10k/powerlevel10k";
       };
-      sessionVariables = {
-	TERM = "xterm-256color";
-      };
-      initExtra = ''
-	${builtins.readFile ./powerlevel10k_init.zsh};
-	compinit
-      '';
+      #sessionVariables = {
+	#TERM = "xterm-256color";
+      #};
+      #initExtra = ''
+	#${builtins.readFile ./powerlevel10k_init.zsh};
+	#compinit
+      #'';
     };
 
     environment.systemPackages = with pkgs; [ zsh-git-prompt nix-zsh-completions zsh-completions ];
