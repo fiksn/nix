@@ -20,6 +20,7 @@ in
     programs.zsh = {
       enable = true;
       enableAutosuggestions = true;
+      #autosuggestions = true;
       enableCompletion = true;
       #dotDir = ".config/zsh";
       #history = {
