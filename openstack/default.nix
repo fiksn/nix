@@ -1,14 +1,13 @@
-{ project, id, username, jmpHost }:
+{ pkgs ? import <nixpkgs> {}, project, id, username, jmpHost }:
 
 let 
-   pkgs = import <nixpkgs> {};
    python = import ./requirements.nix { inherit pkgs; };
    pass = import ../os-password.nix;
 
    osHosts = pkgs.writeTextFile {
      name = "hosts";
      text = ''
-       127.0.0.1 barbican.zrh.sportradar.ag cinder.zrh.sportradar.ag glance.zrh.sportradar.ag heat.zrh.sportradar.ag keystone.sportradar.ag neutron.zrh.sportradar.ag nova.zrh.sportradar.ag
+       127.0.0.1 barbican.zrh.sportradar.ag cinder.zrh.sportradar.ag glance.zrh.sportradar.ag heat.zrh.sportradar.ag keystone.sportradar.ag neutron.zrh.sportradar.ag nova.zrh.sportradar.ag horizon.sportradar.ag 
      '';
    };
 
@@ -32,7 +31,7 @@ let
    };
 
    osProxyOn = pkgs.writeShellScriptBin "os-proxy-on" ''
-     ${pkgs.openssh}/bin/ssh -L9311:10.208.2.12:9311 -L8776:10.208.2.12:8776 -L 9292:10.208.2.12:9292 -L8000:10.208.2.12:8000 -L8004:10.208.2.12:8004 -L35357:10.208.2.12:35357 -L5000:10.208.2.12:5000 -L9696:10.208.2.12:9696 -L8774:10.208.2.12:8774 ${jmpHost} -N&
+     ${pkgs.openssh}/bin/ssh -L9311:10.208.2.12:9311 -L8776:10.208.2.12:8776 -L 9292:10.208.2.12:9292 -L8000:10.208.2.12:8000 -L8004:10.208.2.12:8004 -L35357:10.208.2.12:35357 -L5000:10.208.2.12:5000 -L9696:10.208.2.12:9696 -L8774:10.208.2.12:8774 -L1080:10.208.2.12:80 -L10443:10.208.2.12:443 ${jmpHost} -N&
      ${pkgs.squid}/bin/squid -f ${squidConfig} -N&
      export http_proxy=http://127.0.0.1:3128/
      export https_proxy=http://127.0.1:3128/    
@@ -86,5 +85,6 @@ pkgs.stdenv.mkDerivation {
     export PS1='\n\[\033[1;32m\][${project}-openstack:\w]\$\[\033[0m\] '
     figlet "$(echo ${project} | tr '[:lower:]' '[:upper:]') OpenStack" | lolcat --freq 0.5
     echo "From home you need to enable VPN and do 'proxy-on' before and 'proxy-off' after."
+    echo "https://horizon.sportradar.ag:10443 should work for web"
   '';
 }

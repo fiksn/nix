@@ -1,6 +1,7 @@
 let
   system = builtins.currentSystem;
 
+  # (import <nixpkgs/nixos/lib/eval-config.nix> { modules = [./ops/webserver.nix]; }).config.systemd.units."blank-me-up.service".text'
   pkgs = import <nixpkgs> {
     inherit system;
     inherit (ccc.config.nixpkgs) config overlays;
