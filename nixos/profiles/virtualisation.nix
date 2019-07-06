@@ -1,22 +1,12 @@
-# /etc/nixos/virtualization.nix
-
 { config, pkgs, lib, ... }:
 
 with lib;
 
 let
-  cfg = config.myvirt;
+  cfg = config.profiles.virtualisation;
 in
 {
-  options.myvirt = {
-      enable = mkOption {
-        default = false;
-        description = ''
-          Whether to enable virtualization. 
-        '';
-        type = types.bool;
-      };
-  };
+  options.profiles.virtualisation.enable = lib.mkEnableOption "Whether to enable virtualisation";
   config = mkIf cfg.enable {
     virtualisation.docker.enable = true;  
     environment.systemPackages = with pkgs; [ docker docker_compose skopeo docker-ls ];

@@ -9,17 +9,18 @@ in
 {
   imports =
     [ 
-      ./profiles/virtualization.nix
-      ./profiles/myzsh.nix
-      ./profiles/myi3.nix
+      ./profiles/virtualisation.nix
+      ./profiles/zsh.nix
+      ./profiles/i3.nix
       # or just use pkgs.nixopsUnstable
-      ./profiles/mynixops.nix
+      ./profiles/nixops.nix
     ] ;
 
-  mynixops.enable = false;
-  myi3.enable = true;
-  myzsh.enable = true;
-  myvirt.enable = true;
+  profiles = {
+    i3.enable = true;
+    zsh.enable = true;
+    virtualisation.enable = true;
+  };
   
   nixpkgs = import ./nixpkgs;
 

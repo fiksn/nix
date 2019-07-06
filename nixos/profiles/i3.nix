@@ -3,7 +3,7 @@
 with lib;
 
 let 
-    cfg = config.myi3;
+    cfg = config.profiles.i3;
     dunstrc = builtins.toFile "dunstrc" (pkgs.lib.readFile ./config/dunstrc);
     background-image = pkgs.fetchurl {
       url = "http://orig01.deviantart.net/1810/f/2012/116/a/4/tranquility_by_andreewallin-d4xjtd0.jpg";
@@ -22,7 +22,7 @@ let
       };
       serviceConfig = {
         Type = "simple";
-        User = "fiction";
+        User = ${username};
         ExecStart = pkgs.writeScript name ''
             #! ${pkgs.bash}/bin/bash
             . ${config.system.build.setEnvironment}
@@ -37,15 +37,7 @@ let
     };
 in 
 {
-  options.myi3 = {
-     enable = mkOption {
-        default = false;
-        description = ''
-          Whether to enable the i3-special GUI
-        '';
-        type = types.bool;
-      }; 
-  };
+  options.profiles.i3.enable = lib.mkEnableOption "Whether to enable the i3 GUI";
 
   config = mkIf cfg.enable {
 

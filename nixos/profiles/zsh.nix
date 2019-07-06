@@ -3,18 +3,10 @@
 with lib;
 
 let
-  cfg = config.myzsh;
+  cfg = config.profiles.zsh;
 in 
 {
-  options.myzsh = {
-     enable = mkOption {
-        default = false;
-        description = ''
-          Whether to enable the my zsh
-        '';
-        type = types.bool;
-      };
-  }; 
+  options.profiles.zsh.enable = lib.mkEnableOption "Whether to enable my zsh";
 
   config = mkIf cfg.enable {
     programs.zsh = {

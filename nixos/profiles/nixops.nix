@@ -4,7 +4,7 @@
 with lib;
 
 let
-  cfg = config.mynixops;
+  cfg = config.profiles.nixops;
   nixops = pkgs.fetchFromGitHub {
       owner = "NixOS";
       repo = "nixops";
@@ -13,15 +13,7 @@ let
   };
 in
 {
-  options.mynixops = {
-      enable = mkOption {
-        default = false;
-        description = ''
-          Whether to enable nixops.
-        '';
-        type = types.bool;
-      };
-  };
+  options.profiles.nixops.enable = lib.mkEnableOption "Whether to enable my nixops";
   config = mkIf cfg.enable {
     environment.systemPackages = [ (import "${nixops}/release.nix" {}).build.x86_64-linux ];
   };
