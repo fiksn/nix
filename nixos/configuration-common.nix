@@ -103,12 +103,12 @@ in
     createHome = true;
     description = "Gregor";
     useDefaultShell = false;
-    shell = (if config.myzsh.enable then "/run/current-system/sw/bin/zsh" else pkgs.shadow);
+    shell = (if config.profiles.zsh.enable then "/run/current-system/sw/bin/zsh" else pkgs.shadow);
     openssh.authorizedKeys.keys = [ 
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJAMaDaMzVzsgxq64VQ3YTeBfENo96zK56ld0OU/jgi1"
     ];
     
-    packages = with pkgs; (if config.myi3.enable then [ slack vscode-with-extensions chromium firefox thunderbird libreoffice jetbrains.idea-community adobe-reader mplayer ] else []); 
+    packages = with pkgs; (if config.profiles.i3.enable then [ slack vscode-with-extensions chromium firefox thunderbird libreoffice jetbrains.idea-community adobe-reader mplayer ] else []); 
 
     extraGroups= [
       "audio"

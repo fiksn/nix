@@ -22,7 +22,7 @@ let
       };
       serviceConfig = {
         Type = "simple";
-        User = ${username};
+        User = "fiction";
         ExecStart = pkgs.writeScript name ''
             #! ${pkgs.bash}/bin/bash
             . ${config.system.build.setEnvironment}

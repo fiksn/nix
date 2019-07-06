@@ -11,10 +11,9 @@ in
   config = mkIf cfg.enable {
     programs.zsh = {
       enable = true;
-      enableAutosuggestions = true;
-      #autosuggestions = true;
+      autosuggestions.enable = true;
       enableCompletion = true;
-      #dotDir = ".config/zsh";
+      #history.size = 10000;
       #history = {
 	#expireDuplicatesFirst = true;
 	#extended = true;
@@ -52,10 +51,7 @@ in
 	#compinit
       #'';
     };
-
+	
     environment.systemPackages = with pkgs; [ zsh-git-prompt nix-zsh-completions zsh-completions ];
-    environment.shells = [
-      "/run/current-system/sw/bin/zsh"
-      ];
   };
 }
