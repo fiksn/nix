@@ -92,20 +92,37 @@ bindsym $mod+Shift+o mode "$mode_system"
 bindsym $mod+o exec i3lock -c 000000
 
 mode "$mode_system" {
-    bindsym e exec --no-startup-id i3-msg exit
-    bindsym l exec --no-startup-id i3lock -c 000000, mode "default"
-    bindsym r exec --no-startup-id reboot now
-    bindsym s exec --no-startup-id shutdown now
-    bindsym h exec --no-startup-id systemctl hibernate
-    bindsym p exec --no-startup-id systemctl suspend
+    bindsym e exec --no-startup-id i3-msg exit ; mode "default"
+    bindsym l exec --no-startup-id i3lock -c 000000 ; mode "default"
+    bindsym r exec --no-startup-id reboot now ; mode "default"
+    bindsym s exec --no-startup-id shutdown now ; mode "default"
+    bindsym h exec --no-startup-id systemctl hibernate ; mode "default"
+    bindsym p exec --no-startup-id systemctl suspend ; mode "default"
 
+    bindsym a mode "default"
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
 
-set $mode_system (e)xit, (l)ock, (r)eboot, (s)hutdown, (h)ibernate, sus(p)end
+set $mode_system (e)xit, (l)ock, (r)eboot, (s)hutdown, (h)ibernate, sus(p)end, (a)bort
 
 bindsym $mod+Control+l exec dm-tool switch-to-greeter
+
+bindsym $mod+Shift+t mode "$mode_lang"
+
+mode "$mode_lang" {
+    bindsym u exec --no-startup-id setxkbmap us ; mode "default"
+    bindsym e exec --no-startup-id setxkbmap us ; mode "default"
+    bindsym g exec --no-startup-id setxkbmap de ; mode "default"
+    bindsym d exec --no-startup-id setxkbmap de ; mode "default"
+    bindsym s exec --no-startup-id setxkbmap si ; mode "default"
+
+    bindsym a mode "default"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+set $mode_lang (u)s, (g)erman, (s)lovene, (a)bort
 
 # change focus
 bindsym $mod+j focus left
