@@ -49,6 +49,11 @@ nix-enq -u
 [NixPills](https://nixos.org/nixos/nix-pills/) is a great resource to learn.
 As you can see this stuff is also inspired by [Sam's blog post series](https://www.sam.today/blog/environments-with-nix-shell-learning-nix-pt-1/) too.
 
+Useful resources:
+* [Useful Nix Hacks](http://chriswarbo.net/projects/nixos/useful_hacks.html)
+* [Tyler Slabinski NixOS config](https://gitlab.com/slabity/nixos-config)
+* [Functional DevOps in a Dysfunctional World](https://vaibhavsagar.com/blog/2019/07/04/functional-devops/)
+
 ## Motivation
 
 Domen Kožar in his [blog post](https://www.domenkozar.com/2014/03/11/why-puppet-chef-ansible-arent-good-enough-and-we-can-do-better/) can explain
