@@ -3,7 +3,9 @@
 ########################################
 
 # Fonts and colors
-font pango:Noto Mono for Powerline Regular 8
+#font pango:Noto Mono for Powerline Regular 8
+font pango:Terminess Powerline 9
+
 
 # Class                   Border  Back    Text    Indic
 client.focused            #cecece #33ff66 #2b2b2b #cecece
@@ -82,8 +84,7 @@ bindsym Shift+Print exec scrot -uz '%Y-%m-%d-%s_screenshot$wx$h.jpg' -e 'mv $f ~
 bindsym Control+Print exec gnome-screenshot -i
 
 bindsym $mod+Shift+p exec --no-startup-id /etc/display.sh 
-#bindsym $mod+p exec xfce4-display-settings
-bindsym $mod+p exec lxrandr
+bindsym $mod+p exec pkill -0 xfce4-session && xfce4-display-settings || lxrand
 bindsym $mod+q exec zenity --calendar
 
 bindsym $mod+End mode "$mode_system"

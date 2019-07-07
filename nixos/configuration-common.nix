@@ -1,19 +1,23 @@
-# /etc/nixos/configuration-common.nix
-
 { config, pkgs, callPackage, lib, ... }:
 
 with lib;
+with builtins;
 
-let data = import ./data.nix;
+let 
+
+data = import ./data.nix;
+
+content = dir: filter (hasSuffix ".nix") (attrNames (readDir dir));
+all = dir: map (a: dir + "/${a}") (content dir);
+
+
 in
 {
   imports =
+    (all ./profiles)
+    ++
     [ 
-      ./profiles/virtualisation.nix
-      ./profiles/zsh.nix
-      ./profiles/i3.nix
-      # or just use pkgs.nixopsUnstable
-      ./profiles/nixops.nix
+
     ] ;
 
   profiles = {
