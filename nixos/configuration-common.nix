@@ -5,28 +5,22 @@ with builtins;
 
 let 
 
-data = import ./data.nix;
-
 content = dir: filter (hasSuffix ".nix") (attrNames (readDir dir));
+# get a list of all files ending in .nix
 all = dir: map (a: dir + "/${a}") (content dir);
-
 
 in
 {
   imports =
-    (all ./profiles)
-    ++
-    [ 
-
-    ] ;
+    [ ./data.nix ./nix.nix ] ++
+    (all ./profiles);
 
   profiles = {
     i3.enable = true;
     zsh.enable = true;
     virtualisation.enable = true;
+    automount.enable = true;
   };
-  
-  nixpkgs = import ./nixpkgs;
 
   # Fingerprint reader (unfortunately drivers are not supported)
   services.fprintd.enable = true;
@@ -44,13 +38,13 @@ in
   boot.initrd.luks.devices = [
     {
       name = "root";
-      device = "/dev/disk/by-uuid/${data.diskuuid}";
+      device = "/dev/disk/by-uuid/${config.profiles.data.diskuuid}";
       preLVM = true;
       allowDiscards = true;
     }
   ];
 
-  fileSystems."/".options = if data.ssd then [ "noatime" "nodiratime" "discard" ] else [];
+  fileSystems."/".options = if config.profiles.data.ssd then [ "noatime" "nodiratime" "discard" ] else [];
 
   boot.cleanTmpDir = true;
   boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -101,9 +95,9 @@ in
   programs.tmux.enable = true;
 
   users.mutableUsers = true;
-  users.users.${data.username} = {
+  users.users.${config.profiles.data.username} = {
     isNormalUser = true;
-    home = "/home/${data.username}";
+    home = "/home/${config.profiles.data.username}";
     createHome = true;
     description = "Gregor";
     useDefaultShell = false;
@@ -189,24 +183,6 @@ in
       irssi
   ];
 
+  nixpkgs = import ./nixpkgs;
 
-  nix.package = pkgs.nixUnstable;
-  nix.useSandbox = true;
-
-  # automatic gc
-  nix.gc = {
-    automatic = true;
-    dates = "03:15";
-    options = "--delete-older-than 30d";
-  };
-  
-  services.nixosManual.showManual = false;
-  documentation.man.enable = true;
-
-  # disable the infamous systemd screen/tmux killer
-  services.logind.extraConfig = ''
-    KillUserProcesses=no
-  '';
-
-  
 }
