@@ -91,7 +91,7 @@ in
 	        ${pkgs.xorg.xrdb}/bin/xrdb /etc/X11/xresources
 
 		# Start notifications
-		${pkgs.dunst}/bin/dunst -config /etc/dunst/dunstrc &"
+		${pkgs.dunst}/bin/dunst -config /etc/dunst/dunstrc &
 	      '';
 	    }
 	  ];
