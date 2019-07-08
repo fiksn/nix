@@ -11,6 +11,8 @@ all = dir: map (a: dir + "/${a}") (content dir);
 
 in
 {
+  nixpkgs = import ./nixpkgs;
+
   imports =
     [ ./data.nix ./nix.nix ] ++
     (all ./profiles);
@@ -20,13 +22,10 @@ in
     zsh.enable = true;
     virtualisation.enable = true;
     automount.enable = true;
+    fingerprint.enable = true;
+    location = "slovenia";
   };
 
-  # Fingerprint reader (unfortunately drivers are not supported)
-  services.fprintd.enable = true;
-  security.pam.services.login.fprintAuth = true;
-  security.pam.services.xscreensaver.fprintAuth = true;
-  
   # Test
   #services.kubernetes = {
   #  roles = ["master" "node"];
@@ -34,6 +33,8 @@ in
   #  apiserverAddress = "127.0.0.1";
   #  easyCerts = true;
   #};
+
+  networking.hostName = "present";
 
   boot.initrd.luks.devices = [
     {
@@ -67,7 +68,6 @@ in
   };
   hardware.opengl.driSupport32Bit = true; 
 
-  networking.hostName = "present";
  
   ####
 
@@ -80,10 +80,6 @@ in
     openFirewall = true;
   };
   
-  services.ntp = {
-    enable = true;
-    servers = [ "ntp1.arnes.si" "ntp2.arnes.si" ];
-  };
   
   # gnupg agent
   programs.gnupg.agent = {
@@ -122,13 +118,6 @@ in
 
   #environment.variables = { EDITOR = "vim"; };
   programs.vim.defaultEditor = true;
-
-  time.timeZone = "Europe/Ljubljana";
-  i18n = {
-    consoleFont = "lat9w-16";
-    consoleKeyMap = "slovene";
-    defaultLocale = "sl_SI.UTF-8";
-  };
 
   security.sudo = {
     enable = true;
@@ -183,6 +172,5 @@ in
       irssi
   ];
 
-  nixpkgs = import ./nixpkgs;
 
 }

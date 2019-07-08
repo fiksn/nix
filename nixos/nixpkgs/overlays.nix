@@ -21,7 +21,7 @@ let
 
     hackPackages = super.lib.hiPrio (super.buildEnv {
       name = "hack-packages";
-      paths = with super; [ aircrack-ng gdb gmp jhead john metasploit nmap radare2 z3 ghidra-bin self.pwnPython arpoison ];
+      paths = with super; [ aircrack-ng gdb gmp jhead john metasploit nmap radare2 z3 ghidra-bin self.pwnPython arpoison burpsuite ];
     });
 
     jvmPackages = super.lib.hiPrio (super.buildEnv {
