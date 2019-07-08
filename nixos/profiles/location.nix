@@ -12,8 +12,9 @@ in
     description = ''
       Your current location. 
     '';
+  };
 
-  config = mkIf cfg.location == "slovenia" {
+  config = mkIf (cfg == "slovenia") {
     services.ntp = {
       enable = true;
       servers = [ "ntp1.arnes.si" "ntp2.arnes.si" ];

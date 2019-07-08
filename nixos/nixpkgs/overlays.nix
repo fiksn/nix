@@ -14,7 +14,7 @@ let
 
     sysPackages = super.lib.hiPrio (super.buildEnv {
       name = "sys-packages";
-      paths = with super; [ bash bc coreutils curl dos2unix fuse_exfat gcc gdb git gnupg gosu htop jhead jq mosh netcat ngrep nmap ntp openssl pv pwgen s3fs screen sshfs tig tmux tshark unzip vim wget ];
+      paths = with super; [ bash bc coreutils curl dos2unix fuse_exfat gcc gdb git gnupg gosu htop jhead jq ltrace mosh netcat ngrep nmap ntp openssl pssh pv pwgen s3fs screen strace sshfs tig tmux tshark unzip vim wget telnet rsync ];
     });
 
     pwnPython = super.python27.withPackages (ps: with ps; [ numpy pwntools pip ]);

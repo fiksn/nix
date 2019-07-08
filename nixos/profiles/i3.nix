@@ -1,4 +1,4 @@
-{ config, pkgs, lib, username ? "fiction", ... }:
+{ config, pkgs, lib, ... }:
 
 with lib;
 

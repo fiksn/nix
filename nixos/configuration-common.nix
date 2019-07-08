@@ -8,14 +8,13 @@ let
 content = dir: filter (hasSuffix ".nix") (attrNames (readDir dir));
 # get a list of all files ending in .nix
 all = dir: map (a: dir + "/${a}") (content dir);
-
 in
 {
   nixpkgs = import ./nixpkgs;
 
   imports =
-    [ ./data.nix ./nix.nix ] ++
-    (all ./profiles);
+    [ ./data.nix ./roles/common.nix ./nix.nix ] ++
+    (all ./profiles); 
 
   profiles = {
     i3.enable = true;
@@ -23,6 +22,7 @@ in
     virtualisation.enable = true;
     automount.enable = true;
     fingerprint.enable = true;
+    security.enable = true;
     location = "slovenia";
   };
 
@@ -34,27 +34,29 @@ in
   #  easyCerts = true;
   #};
 
+  ### 
+
   networking.hostName = "present";
+
+  system.stateVersion = "19.03";
 
   boot.initrd.luks.devices = [
     {
       name = "root";
-      device = "/dev/disk/by-uuid/${config.profiles.data.diskuuid}";
+      device = "/dev/disk/by-uuid/644e1f44-c76b-4cb8-9c53-485d7c006d64";
       preLVM = true;
       allowDiscards = true;
     }
   ];
 
-  fileSystems."/".options = if config.profiles.data.ssd then [ "noatime" "nodiratime" "discard" ] else [];
+  fileSystems."/".options = [ "noatime" "nodiratime" "discard" ];
 
-  boot.cleanTmpDir = true;
   boot.kernelPackages = pkgs.linuxPackages_latest;
+
   # Or else I keep getting Corrected error dmesg spam
   boot.kernelParams = [ "pci=noaer" ];
-  boot.kernel.sysctl = {
-    "net.ipv4.ip_forward" = 1;
-    "vm.overcommit_memory" = 1;
-  };
+
+  ## laptop
 
   # wpa_passphrase MyWifiSSID MySecretPassword > wpa_supplicant.conf
   networking.wireless.enable = true;
@@ -67,6 +69,8 @@ in
     support32Bit = true;
   };
   hardware.opengl.driSupport32Bit = true; 
+  
+  ## laptop
 
  
   ####
@@ -80,15 +84,12 @@ in
     openFirewall = true;
   };
   
-  
-  # gnupg agent
   programs.gnupg.agent = {
     enable = true;
-    enableSSHSupport = true;
+    enableSSHSupport = config.services.openssh.enable;
   };
 
   #programs.sysdig.enable = true;
-  programs.tmux.enable = true;
 
   users.mutableUsers = true;
   users.users.${config.profiles.data.username} = {
@@ -116,61 +117,6 @@ in
     ];
   };
 
-  #environment.variables = { EDITOR = "vim"; };
-  programs.vim.defaultEditor = true;
-
-  security.sudo = {
-    enable = true;
-    wheelNeedsPassword = false;
-  };
-  security.hideProcessInformation = true;
-
-  environment.systemPackages = with pkgs; [
-      bash
-      bc
-      coreutils
-      curl
-      dos2unix
-      #envsubst
-      file
-      fuse_exfat
-      gcc
-      gdb
-      git
-      gnupg
-      gosu
-      htop
-      jhead
-      jq
-      ltrace
-      mosh
-      netcat
-      ngrep
-      nmap
-      ntp
-      openssl
-      pssh
-      pv
-      pwgen
-      s3fs
-      screen
-      strace
-      sshfs
-      tig
-      tmux
-      tshark
-      unzip
-      vim
-      wget
-      
-      ntfs3g
-      rsync
-      iotop
-      disnix
-      dhcp
-      telnet
-      irssi
-  ];
 
 
 }

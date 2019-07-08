@@ -21,5 +21,4 @@ with lib;
     KillUserProcesses=no
   '';
 
-  system.stateVersion = "19.03";
 }

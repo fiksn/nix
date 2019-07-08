@@ -1,6 +1,6 @@
 # /etc/nixos/configuration.nix
 
-{ config, pkgs, callPackage, ... }:
+{ ... }:
 
 {
   imports =

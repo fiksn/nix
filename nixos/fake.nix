@@ -1,3 +1,4 @@
+# This is used only for testing
 let
   system = builtins.currentSystem;
 
