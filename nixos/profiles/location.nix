@@ -21,7 +21,7 @@ in
     };
     time.timeZone = "Europe/Ljubljana";
     i18n = {
-      consoleFont = "lat9w-16";
+      #consoleFont = "lat9w-16";
       consoleKeyMap = "slovene";
       defaultLocale = "sl_SI.UTF-8";
     };

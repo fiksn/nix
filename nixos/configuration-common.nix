@@ -13,7 +13,7 @@ in
   nixpkgs = import ./nixpkgs;
 
   imports =
-    [ ./data.nix ./roles/common.nix ./nix.nix ] ++
+    [ ./data.nix ./roles/common.nix ./nix.nix ./fonts.nix ] ++
     (all ./profiles); 
 
   profiles = {
@@ -90,6 +90,7 @@ in
   };
 
   #programs.sysdig.enable = true;
+  programs.adb.enable = true;
 
   users.mutableUsers = true;
   users.users.${config.profiles.data.username} = {
