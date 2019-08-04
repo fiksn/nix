@@ -53,6 +53,8 @@ Useful resources:
 * [Useful Nix Hacks](http://chriswarbo.net/projects/nixos/useful_hacks.html)
 * [Tyler Slabinski NixOS config](https://gitlab.com/slabity/nixos-config)
 * [Functional DevOps in a Dysfunctional World](https://vaibhavsagar.com/blog/2019/07/04/functional-devops/)
+* [Nix - A One Pager](https://github.com/tazjin/nix-1p)
+* [Container registry which transparently builds images using the Nix package manager](https://github.com/google/nixery)
 
 ## Motivation
 
