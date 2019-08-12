@@ -75,6 +75,19 @@ in
  
   ####
 
+  services.trezord.enable = true;
+  services.redsocks = {
+    enable = true;
+      redsocks = [
+        {
+        port = 1080;
+        proxy = "127.0.0.1:2080";
+        type = "socks5";
+        redirectCondition = false;
+      }
+     ];
+  };
+
   services.openssh = {
     enable = true;
     permitRootLogin = "prohibit-password";
@@ -115,6 +128,7 @@ in
       "video"
       "wheel"
       "fuse"
+      "socksified"
     ];
   };
 

@@ -13,6 +13,9 @@
 
   environment.systemPackages = with pkgs; [
       sysPackages
+
+      corkscrew
+      proxychains
  
       ntfs3g
       disnix

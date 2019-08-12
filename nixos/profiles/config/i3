@@ -84,7 +84,7 @@ bindsym Shift+Print exec scrot -uz '%Y-%m-%d-%s_screenshot$wx$h.jpg' -e 'mv $f ~
 bindsym Control+Print exec gnome-screenshot -i
 
 bindsym $mod+Shift+p exec --no-startup-id /etc/display.sh 
-bindsym $mod+p exec pkill -0 xfce4-session && xfce4-display-settings || lxrand
+bindsym $mod+p exec pkill -0 xfce4-session && xfce4-display-settings || lxrandr
 bindsym $mod+q exec zenity --calendar
 
 bindsym $mod+End mode "$mode_system"
@@ -106,7 +106,7 @@ mode "$mode_system" {
 
 set $mode_system (e)xit, (l)ock, (r)eboot, (s)hutdown, (h)ibernate, sus(p)end, (a)bort
 
-bindsym $mod+Control+l exec dm-tool switch-to-greeter
+bindsym $mod+Control+Shift+l exec dm-tool switch-to-greeter
 
 bindsym $mod+Shift+t mode "$mode_lang"
 
@@ -123,6 +123,8 @@ mode "$mode_lang" {
 }
 
 set $mode_lang (u)s, (g)erman, (s)lovene, (a)bort
+
+bindsym $mod+Shift+f exec --no-startup-id Thunar
 
 # change focus
 bindsym $mod+j focus left
@@ -141,6 +143,11 @@ bindsym $mod+Shift+j move left
 bindsym $mod+Shift+k move down
 bindsym $mod+Shift+l move up
 bindsym $mod+Shift+semicolon move right
+
+bindsym $mod+Control+Left move workspace to output left
+bindsym $mod+Control+h move workspace to output left
+bindsym $mod+Control+Right move workspace to output right
+bindsym $mod+Control+l move workspace to output right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Shift+Left move left
@@ -189,9 +196,6 @@ set $ws7 "7"
 set $ws8 "8"
 set $ws9 "9"
 set $ws10 "10"
-
-bindsym $mod+Ctrl+Right workspace next
-bindsym $mod+Ctrl+Left workspace prev
 
 # switch to workspace
 bindsym $mod+1 workspace $ws1
