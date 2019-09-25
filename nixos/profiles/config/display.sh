@@ -1,52 +1,70 @@
-#!/bin/sh                                                                                                                                                                                                                                                    
-# This script is intended to make switching between laptop and external displays easier when using i3+dmenu                                                                                                                                                    
-# To run this script, map it to some shortcut in your i3 config, e.g:                                                                                                                                                                                          
-# bindsym $mod+p exec --no-startup-id $config/display.sh                                                                                                                                                                                                       
-# IMPORTANT: run chmod +x on the script to make it executable                                                                                                                                                                                                  
-# The result is 4 options appearing in dmenu, from which you can choose                                                                                                                                                                                        
-                                                                                                                                                                                                                                                               
-                                                                                                                                                                                                                                                               
-# This is your default laptop screen, detect by running `xrandr`                                                                                                                                                                                               
-INTERNAL_OUTPUT="eDP1"                                                                                                                                                                                                                                       
-                                                                                                                                                                                                                                                               
-# choices will be displayed in dmenu                                                                                                                                                                                                                           
-choices="laptop\ndual\nexternal\nclone"                                                                                                                                                                                                                        
-                                                                                                                                                                                                                                                               
+#!/bin/sh
+
+INTERNAL_OUTPUT=$(xrandr | grep connected | cut -d" " -f 1 | head -1)
+DISCONNECTED_EXTERNAL=$(xrandr | grep connected | cut -d" " -f 1-2 | tail -n+2 | grep dis | cut -d" " -f 1)
+CONNECTED_EXTERNAL=$(xrandr | grep connected | cut -d" " -f 1-2 | tail -n+2 | grep -v dis | cut -d" " -f 1)
+
+echo "Internal $INTERNAL_OUTPUT, disconnected |$DISCONNECTED_EXTERNAL| connected |$CONNECTED_EXTERNAL|"
+
+CHOICES="laptop\nleft\nright\nexternal\nclone"                                                                                                                                                                                                                        
 # Your choice in dmenu will determine what xrandr command to run                                                                                                                                                                                               
-chosen=$(echo -e $choices | dmenu -i)                                                                                                                                                                                                                          
-                                                                                                                                                                                                                                                               
-# This is used to determine wihch external display you have connected
-# This may vary between OS. e.g VGA1 instead of VGA-1
-if [ `xrandr | grep VGA1 | grep -c ' connected '` -eq 1 ]; then
-        EXTERNAL_OUTPUT="VGA1"
-fi
-if [ `xrandr | grep DVI1 | grep -c ' connected '` -eq 1 ]; then
-        EXTERNAL_OUTPUT="DVI1"
-fi
-if [ `xrandr | grep HDMI1 | grep -c ' connected '` -eq 1 ]; then
-        EXTERNAL_OUTPUT="HDMI1"
-fi
-if [ `xrandr | grep HDMI2 | grep -c ' connected '` -eq 1 ]; then
-        EXTERNAL_OUTPUT="HDMI2"
-fi
-if [ `xrandr | grep HDMI3 | grep -c ' connected '` -eq 1 ]; then
-        EXTERNAL_OUTPUT="HDMI3"
-fi
-if [ `xrandr | grep DP1 | grep -c ' connected '` -eq 1 ]; then
-        EXTERNAL_OUTPUT="DP1"
-fi
-if [ `xrandr | grep DP2 | grep -c ' connected '` -eq 1 ]; then
-        EXTERNAL_OUTPUT="DP2"
-fi
-if [ `xrandr | grep DP-3 | grep -c ' connected '` -eq 1 ]; then
-        EXTERNAL_OUTPUT="DP3"
-fi
+MENU=$(echo -e $CHOICES | dmenu -i -p "Display config")                                                                                                                                                                                                                          
+case "$MENU" in
+    laptop)
+      STR=""
+      for i in $CONNECTED_EXTERNAL; do
+        STR="$STR --output $i --off"
+      done
+      echo xrandr --output $INTERNAL_OUTPUT --auto --primary $STR
+      xrandr --output $INTERNAL_OUTPUT --auto --primary $STR
+      ;;
+    external)
+      NUM=$(echo $CONNECTED_EXTERNAL | wc -l)
+      if (( $NUM == 1 )); then
+        WHICH=$CONNECTED_EXTERNAL
+      else
+        OTHERS=$(echo $DISCONNECTED_EXTERNAL | tr "\n" " ")
+        echo "OTHERS $OTHERS"
+        WHICH=$(echo "$CONNECTED_EXTERNAL" | dmenu -i -p "Which monitor - $OTHERS")
+        echo "WHICH $WHICH"
+      fi
+      echo xrandr --output $INTERNAL_OUTPUT --off --output $WHICH --auto --primary 
+      xrandr --output $INTERNAL_OUTPUT --off --output $WHICH --auto --primary 
+      ;;
+    clone)
+      STR=""
+      for i in $CONNECTED_EXTERNAL; do
+        STR="$STR --output $i --auto --same-as $INTERNAL_OUTPUT"
+      done
 
-# xrander will run and turn on the display you want, if you have an option for 3 displays, this will need some modifications
-case "$chosen" in
-    external) xrandr --output $INTERNAL_OUTPUT --off --output $EXTERNAL_OUTPUT --auto --primary ;;
-    laptop) xrandr --output $INTERNAL_OUTPUT --auto --primary --output $EXTERNAL_OUTPUT --off ;;
-    clone) xrandr --output $INTERNAL_OUTPUT --auto --output $EXTERNAL_OUTPUT --auto --same-as $INTERNAL_OUTPUT ;;
-    dual) xrandr --output $INTERNAL_OUTPUT --auto --output $EXTERNAL_OUTPUT --auto --right-of $INTERNAL_OUTPUT --primary ;;
+      echo xrandr --output $INTERNAL_OUTPUT --auto $STR
+      xrandr --output $INTERNAL_OUTPUT --auto $STR
+      ;;
 
+    left)
+      NUM=$(echo $CONNECTED_EXTERNAL | wc -l)
+      if (( $NUM == 1 )); then
+        WHICH=$CONNECTED_EXTERNAL
+      else
+        OTHERS=$(echo $DISCONNECTED_EXTERNAL | tr "\n" " ")
+        echo "OTHERS $OTHERS"
+        WHICH=$(echo "$CONNECTED_EXTERNAL" | dmenu -i -p "Which monitor - $OTHERS")
+        echo "WHICH $WHICH"
+      fi
+      echo xrandr --output $INTERNAL_OUTPUT --auto --output $WHICH --auto --left-of $INTERNAL_OUTPUT --primary
+      xrandr --output $INTERNAL_OUTPUT --auto --output $WHICH --auto --left-of $INTERNAL_OUTPUT --primary
+      ;;
+    right) 
+      NUM=$(echo $CONNECTED_EXTERNAL | wc -l)
+      if (( $NUM == 1 )); then
+        WHICH=$CONNECTED_EXTERNAL
+      else
+        OTHERS=$(echo $DISCONNECTED_EXTERNAL | tr "\n" " ")
+        echo "OTHERS $OTHERS"
+        WHICH=$(echo "$CONNECTED_EXTERNAL" | dmenu -i -p "Which monitor - $OTHERS")
+        echo "WHICH $WHICH"
+      fi
+      echo xrandr --output $INTERNAL_OUTPUT --auto --output $WHICH --auto --right-of $INTERNAL_OUTPUT --primary
+      xrandr --output $INTERNAL_OUTPUT --auto --output $WHICH --auto --right-of $INTERNAL_OUTPUT --primary
+      ;;
 esac
