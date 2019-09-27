@@ -69,9 +69,19 @@ in
     support32Bit = true;
   };
   hardware.opengl.driSupport32Bit = true; 
+
+  # xbacklight alternative
+  environment.systemPackages = with pkgs; [ acpilight ];
+
+  # Allow brightness settings for video group
+  services.udev = {
+    extraRules = ''
+      ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="intel_backlight", RUN+="${pkgs.coreutils}/bin/chgrp video /sys/class/backlight/%k/brightness"
+      ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="intel_backlight", RUN+="${pkgs.coreutils}/bin/chmod g+w /sys/class/backlight/%k/brightness"
+    '';
+  };
   
   ## laptop
-
  
   ####
 

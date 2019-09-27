@@ -46,7 +46,6 @@ in
         gnome3.gnome-screenshot
         gparted
         wireshark-qt
-        xorg.xbacklight
         pavucontrol
         playerctl
         scrot 
