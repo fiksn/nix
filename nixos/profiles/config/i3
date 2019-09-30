@@ -54,6 +54,9 @@ font pango:monospace 8
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
+# Autostart
+exec xautolock -time 1 -locker 'i3lock -c 000000'&
+
 # start a terminal
 bindsym $mod+Return exec i3-sensible-terminal -bg black -fg white -fa "Monospace" -fs 12 -sl 99999
 

@@ -44,6 +44,7 @@ in
     environment = {
       systemPackages = with pkgs; [
         gnome3.gnome-screenshot
+        xautolock
         gparted
         wireshark-qt
         pavucontrol
