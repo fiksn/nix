@@ -14,6 +14,8 @@ in
 
   imports =
     [ ./data.nix ./roles/common.nix ./nix.nix ./fonts.nix ] ++
+    # Other stuff
+    [ ./other/qemu.nix ] ++
     (all ./profiles); 
 
   profiles = {
@@ -24,6 +26,12 @@ in
     fingerprint.enable = true;
     security.enable = true;
     location = "slovenia";
+  };
+
+  # Other stuff
+  qemu-user = {
+    arm = true;
+    aarch64 = true;
   };
 
   # Test
