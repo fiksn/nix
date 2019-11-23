@@ -1,8 +1,8 @@
-# generated using pypi2nix tool (version: 2.0.0)
-# See more at: https://github.com/garbas/pypi2nix
+# generated using pypi2nix tool (version: 2.0.1)
+# See more at: https://github.com/nix-community/pypi2nix
 #
 # COMMAND:
-#   pypi2nix -V 3.7 -e beautifulsoup4 -e boto -e boto3 -e awscli -E python37Packages.setuptools -E python37Packages.setuptools_scm -E python37Packages.setuptools-git -E python37Packages.vcversioner
+#   pypi2nix -e beautifulsoup4 -e boto -e boto3 -e awscli
 #
 
 { pkgs ? import <nixpkgs> {},
@@ -18,31 +18,17 @@ let
   import "${toString pkgs.path}/pkgs/top-level/python-packages.nix" {
     inherit pkgs;
     inherit (pkgs) stdenv;
-    python = pkgs.python37;
-    # patching pip so it does not try to remove files when running nix-shell
-    overrides =
-      self: super: {
-        bootstrapped-pip = super.bootstrapped-pip.overrideDerivation (old: {
-          patchPhase = old.patchPhase + ''
-            if [ -e $out/${pkgs.python37.sitePackages}/pip/req/req_install.py ]; then
-              sed -i \
-                -e "s|paths_to_remove.remove(auto_confirm)|#paths_to_remove.remove(auto_confirm)|"  \
-                -e "s|self.uninstalled = paths_to_remove|#self.uninstalled = paths_to_remove|"  \
-                $out/${pkgs.python37.sitePackages}/pip/req/req_install.py
-            fi
-          '';
-        });
-      };
+    python = pkgs.python3;
   };
 
-  commonBuildInputs = with pkgs; [ python37Packages.setuptools python37Packages.setuptools_scm python37Packages.setuptools-git python37Packages.vcversioner ];
+  commonBuildInputs = [];
   commonDoCheck = false;
 
   withPackages = pkgs':
     let
       pkgs = builtins.removeAttrs pkgs' ["__unfix__"];
       interpreterWithPackages = selectPkgsFn: pythonPackages.buildPythonPackage {
-        name = "python37-interpreter";
+        name = "python3-interpreter";
         buildInputs = [ makeWrapper ] ++ (selectPkgsFn pkgs);
         buildCommand = ''
           mkdir -p $out/bin
@@ -75,7 +61,9 @@ let
       __old = pythonPackages;
       inherit interpreter;
       inherit interpreterWithPackages;
-      mkDerivation = pythonPackages.buildPythonPackage;
+      mkDerivation = args: pythonPackages.buildPythonPackage (args // {
+        nativeBuildInputs = (args.nativeBuildInputs or []) ++ args.buildInputs;
+      });
       packages = pkgs;
       overrideDerivation = drv: f:
         pythonPackages.buildPythonPackage (
@@ -88,41 +76,19 @@ let
   python = withPackages {};
 
   generated = self: {
-    "PyYAML" = python.mkDerivation {
-      name = "PyYAML-3.13";
-      src = pkgs.fetchurl {
-        url = "https://files.pythonhosted.org/packages/9e/a3/1d13970c3f36777c583f136c136f804d70f500168edc1edea6daa7200769/PyYAML-3.13.tar.gz";
-        sha256 = "3ef3092145e9b70e3ddd2c7ad59bdd0252a94dfe3949721633e41344de00a6bf";
-      };
-      doCheck = commonDoCheck;
-      checkInputs = commonBuildInputs ++ [ ];
-      buildInputs = commonBuildInputs ++ [ ];
-      nativeBuildInputs = commonBuildInputs ++ [ ];
-      propagatedNativeBuildInputs = commonBuildInputs ++ [ ];
-      propagatedBuildInputs = [ ];
-      meta = with pkgs.stdenv.lib; {
-        homepage = "http://pyyaml.org/wiki/PyYAML";
-        license = licenses.mit;
-        description = "YAML parser and emitter for Python";
-      };
-    };
-
     "awscli" = python.mkDerivation {
-      name = "awscli-1.16.171";
+      name = "awscli-1.16.285";
       src = pkgs.fetchurl {
-        url = "https://files.pythonhosted.org/packages/dc/eb/46de39527c3a6ebfab3a18c113e5b5f444ef22a57369248f7e207fc58776/awscli-1.16.171.tar.gz";
-        sha256 = "9b8cccfb4d7e3788b2f492cdad587dec390eadda76be9245c0bc02e0f56747e5";
-      };
+        url = "https://files.pythonhosted.org/packages/d1/2b/969fe87e32ab81c84e641f8d945609fb57eeaa01e18b9cc30e9fcd4045be/awscli-1.16.285.tar.gz";
+        sha256 = "f1d6a009a05bb716dde32d1f8b2bb055f4d37d50d653ea04919072d5915a4620";
+};
       doCheck = commonDoCheck;
-      checkInputs = commonBuildInputs ++ [ ];
       buildInputs = commonBuildInputs ++ [ ];
-      nativeBuildInputs = commonBuildInputs ++ [ ];
-      propagatedNativeBuildInputs = commonBuildInputs ++ [ ];
       propagatedBuildInputs = [
-        self."PyYAML"
         self."botocore"
         self."colorama"
         self."docutils"
+        self."pyyaml"
         self."rsa"
         self."s3transfer"
       ];
@@ -134,16 +100,13 @@ let
     };
 
     "beautifulsoup4" = python.mkDerivation {
-      name = "beautifulsoup4-4.7.1";
+      name = "beautifulsoup4-4.8.1";
       src = pkgs.fetchurl {
-        url = "https://files.pythonhosted.org/packages/80/f2/f6aca7f1b209bb9a7ef069d68813b091c8c3620642b568dac4eb0e507748/beautifulsoup4-4.7.1.tar.gz";
-        sha256 = "945065979fb8529dd2f37dbb58f00b661bdbcbebf954f93b32fdf5263ef35348";
-      };
+        url = "https://files.pythonhosted.org/packages/86/cd/495c68f0536dcd25f016e006731ba7be72e072280305ec52590012c1e6f2/beautifulsoup4-4.8.1.tar.gz";
+        sha256 = "6135db2ba678168c07950f9a16c4031822c6f4aec75a65e0a97bc5ca09789931";
+};
       doCheck = commonDoCheck;
-      checkInputs = commonBuildInputs ++ [ ];
       buildInputs = commonBuildInputs ++ [ ];
-      nativeBuildInputs = commonBuildInputs ++ [ ];
-      propagatedNativeBuildInputs = commonBuildInputs ++ [ ];
       propagatedBuildInputs = [
         self."soupsieve"
       ];
@@ -159,12 +122,9 @@ let
       src = pkgs.fetchurl {
         url = "https://files.pythonhosted.org/packages/c8/af/54a920ff4255664f5d238b5aebd8eedf7a07c7a5e71e27afcfe840b82f51/boto-2.49.0.tar.gz";
         sha256 = "ea0d3b40a2d852767be77ca343b58a9e3a4b00d9db440efb8da74b4e58025e5a";
-      };
+};
       doCheck = commonDoCheck;
-      checkInputs = commonBuildInputs ++ [ ];
       buildInputs = commonBuildInputs ++ [ ];
-      nativeBuildInputs = commonBuildInputs ++ [ ];
-      propagatedNativeBuildInputs = commonBuildInputs ++ [ ];
       propagatedBuildInputs = [ ];
       meta = with pkgs.stdenv.lib; {
         homepage = "https://github.com/boto/boto/";
@@ -174,16 +134,13 @@ let
     };
 
     "boto3" = python.mkDerivation {
-      name = "boto3-1.9.161";
+      name = "boto3-1.10.21";
       src = pkgs.fetchurl {
-        url = "https://files.pythonhosted.org/packages/83/1c/7a811e71c9b9d5dc81025d24fe9286564bc42e08a2300e92909602fa9b98/boto3-1.9.161.tar.gz";
-        sha256 = "352a5a8bd26ba771ad86ec23ab632a9402fab2d9609243011253241ae1f5889d";
-      };
+        url = "https://files.pythonhosted.org/packages/6f/eb/46ac0155575ce2d6d56a1d85e052975b066ce5ee8fef77fb63e01fb5aa71/boto3-1.10.21.tar.gz";
+        sha256 = "6676a39f43dbf928c631157aa80e1d6ce8921ad8a65a004ebc924519ea8ae255";
+};
       doCheck = commonDoCheck;
-      checkInputs = commonBuildInputs ++ [ ];
       buildInputs = commonBuildInputs ++ [ ];
-      nativeBuildInputs = commonBuildInputs ++ [ ];
-      propagatedNativeBuildInputs = commonBuildInputs ++ [ ];
       propagatedBuildInputs = [
         self."botocore"
         self."jmespath"
@@ -197,16 +154,13 @@ let
     };
 
     "botocore" = python.mkDerivation {
-      name = "botocore-1.12.161";
+      name = "botocore-1.13.21";
       src = pkgs.fetchurl {
-        url = "https://files.pythonhosted.org/packages/71/aa/d85648d86c5eef780948f41891886590610aea5639f3f166cb8186949256/botocore-1.12.161.tar.gz";
-        sha256 = "424c01d241c40e29bf90cc939450676a30ef1a54ee7a219bb2bc6bb876eba7b0";
-      };
+        url = "https://files.pythonhosted.org/packages/7a/a1/b7cd8098c518a42a5cc66528c28224ac9ea35ccee041d384c4ce79ad4a39/botocore-1.13.21.tar.gz";
+        sha256 = "eca34d8327d2db18c77820d9279664e49414cef2f49d37d1cf4535d42bc0cfb1";
+};
       doCheck = commonDoCheck;
-      checkInputs = commonBuildInputs ++ [ ];
       buildInputs = commonBuildInputs ++ [ ];
-      nativeBuildInputs = commonBuildInputs ++ [ ];
-      propagatedNativeBuildInputs = commonBuildInputs ++ [ ];
       propagatedBuildInputs = [
         self."docutils"
         self."jmespath"
@@ -221,16 +175,13 @@ let
     };
 
     "colorama" = python.mkDerivation {
-      name = "colorama-0.3.9";
+      name = "colorama-0.4.1";
       src = pkgs.fetchurl {
-        url = "https://files.pythonhosted.org/packages/e6/76/257b53926889e2835355d74fec73d82662100135293e17d382e2b74d1669/colorama-0.3.9.tar.gz";
-        sha256 = "48eb22f4f8461b1df5734a074b57042430fb06e1d61bd1e11b078c0fe6d7a1f1";
-      };
+        url = "https://files.pythonhosted.org/packages/76/53/e785891dce0e2f2b9f4b4ff5bc6062a53332ed28833c7afede841f46a5db/colorama-0.4.1.tar.gz";
+        sha256 = "05eed71e2e327246ad6b38c540c4a3117230b19679b875190486ddd2d721422d";
+};
       doCheck = commonDoCheck;
-      checkInputs = commonBuildInputs ++ [ ];
       buildInputs = commonBuildInputs ++ [ ];
-      nativeBuildInputs = commonBuildInputs ++ [ ];
-      propagatedNativeBuildInputs = commonBuildInputs ++ [ ];
       propagatedBuildInputs = [ ];
       meta = with pkgs.stdenv.lib; {
         homepage = "https://github.com/tartley/colorama";
@@ -240,20 +191,17 @@ let
     };
 
     "docutils" = python.mkDerivation {
-      name = "docutils-0.14";
+      name = "docutils-0.15.2";
       src = pkgs.fetchurl {
-        url = "https://files.pythonhosted.org/packages/84/f4/5771e41fdf52aabebbadecc9381d11dea0fa34e4759b4071244fa094804c/docutils-0.14.tar.gz";
-        sha256 = "51e64ef2ebfb29cae1faa133b3710143496eca21c530f3f71424d77687764274";
-      };
+        url = "https://files.pythonhosted.org/packages/93/22/953e071b589b0b1fee420ab06a0d15e5aa0c7470eb9966d60393ce58ad61/docutils-0.15.2.tar.gz";
+        sha256 = "a2aeea129088da402665e92e0b25b04b073c04b2dce4ab65caaa38b7ce2e1a99";
+};
       doCheck = commonDoCheck;
-      checkInputs = commonBuildInputs ++ [ ];
       buildInputs = commonBuildInputs ++ [ ];
-      nativeBuildInputs = commonBuildInputs ++ [ ];
-      propagatedNativeBuildInputs = commonBuildInputs ++ [ ];
       propagatedBuildInputs = [ ];
       meta = with pkgs.stdenv.lib; {
         homepage = "http://docutils.sourceforge.net/";
-        license = "public domain, Python, 2-Clause BSD, GPL 3 (see COPYING.txt)";
+        license = licenses.publicDomain;
         description = "Docutils -- Python Documentation Utilities";
       };
     };
@@ -263,12 +211,9 @@ let
       src = pkgs.fetchurl {
         url = "https://files.pythonhosted.org/packages/2c/30/f0162d3d83e398c7a3b70c91eef61d409dea205fb4dc2b47d335f429de32/jmespath-0.9.4.tar.gz";
         sha256 = "bde2aef6f44302dfb30320115b17d030798de8c4110e28d5cf6cf91a7a31074c";
-      };
+};
       doCheck = commonDoCheck;
-      checkInputs = commonBuildInputs ++ [ ];
       buildInputs = commonBuildInputs ++ [ ];
-      nativeBuildInputs = commonBuildInputs ++ [ ];
-      propagatedNativeBuildInputs = commonBuildInputs ++ [ ];
       propagatedBuildInputs = [ ];
       meta = with pkgs.stdenv.lib; {
         homepage = "https://github.com/jmespath/jmespath.py";
@@ -278,16 +223,13 @@ let
     };
 
     "pyasn1" = python.mkDerivation {
-      name = "pyasn1-0.4.5";
+      name = "pyasn1-0.4.8";
       src = pkgs.fetchurl {
-        url = "https://files.pythonhosted.org/packages/46/60/b7e32f6ff481b8a1f6c8f02b0fd9b693d1c92ddd2efb038ec050d99a7245/pyasn1-0.4.5.tar.gz";
-        sha256 = "da2420fe13a9452d8ae97a0e478adde1dee153b11ba832a95b223a2ba01c10f7";
-      };
+        url = "https://files.pythonhosted.org/packages/a4/db/fffec68299e6d7bad3d504147f9094830b704527a7fc098b721d38cc7fa7/pyasn1-0.4.8.tar.gz";
+        sha256 = "aef77c9fb94a3ac588e87841208bdec464471d9871bd5050a287cc9a475cd0ba";
+};
       doCheck = commonDoCheck;
-      checkInputs = commonBuildInputs ++ [ ];
       buildInputs = commonBuildInputs ++ [ ];
-      nativeBuildInputs = commonBuildInputs ++ [ ];
-      propagatedNativeBuildInputs = commonBuildInputs ++ [ ];
       propagatedBuildInputs = [ ];
       meta = with pkgs.stdenv.lib; {
         homepage = "https://github.com/etingof/pyasn1";
@@ -301,19 +243,36 @@ let
       src = pkgs.fetchurl {
         url = "https://files.pythonhosted.org/packages/ad/99/5b2e99737edeb28c71bcbec5b5dda19d0d9ef3ca3e92e3e925e7c0bb364c/python-dateutil-2.8.0.tar.gz";
         sha256 = "c89805f6f4d64db21ed966fda138f8a5ed7a4fdbc1a8ee329ce1b74e3c74da9e";
-      };
+};
       doCheck = commonDoCheck;
-      checkInputs = commonBuildInputs ++ [ ];
-      buildInputs = commonBuildInputs ++ [ ];
-      nativeBuildInputs = commonBuildInputs ++ [ ];
-      propagatedNativeBuildInputs = commonBuildInputs ++ [ ];
+      buildInputs = commonBuildInputs ++ [
+        self."setuptools"
+        self."setuptools-scm"
+        self."wheel"
+      ];
       propagatedBuildInputs = [
         self."six"
       ];
       meta = with pkgs.stdenv.lib; {
         homepage = "https://dateutil.readthedocs.io";
-        license = "Dual License";
+        license = licenses.bsdOriginal;
         description = "Extensions to the standard Python datetime module";
+      };
+    };
+
+    "pyyaml" = python.mkDerivation {
+      name = "pyyaml-5.1.2";
+      src = pkgs.fetchurl {
+        url = "https://files.pythonhosted.org/packages/e3/e8/b3212641ee2718d556df0f23f78de8303f068fe29cdaa7a91018849582fe/PyYAML-5.1.2.tar.gz";
+        sha256 = "01adf0b6c6f61bd11af6e10ca52b7d4057dd0be0343eb9283c878cf3af56aee4";
+};
+      doCheck = commonDoCheck;
+      buildInputs = commonBuildInputs ++ [ ];
+      propagatedBuildInputs = [ ];
+      meta = with pkgs.stdenv.lib; {
+        homepage = "https://github.com/yaml/pyyaml";
+        license = licenses.mit;
+        description = "YAML parser and emitter for Python";
       };
     };
 
@@ -322,18 +281,15 @@ let
       src = pkgs.fetchurl {
         url = "https://files.pythonhosted.org/packages/14/89/adf8b72371e37f3ca69c6cb8ab6319d009c4a24b04a31399e5bd77d9bb57/rsa-3.4.2.tar.gz";
         sha256 = "25df4e10c263fb88b5ace923dd84bf9aa7f5019687b5e55382ffcdb8bede9db5";
-      };
+};
       doCheck = commonDoCheck;
-      checkInputs = commonBuildInputs ++ [ ];
       buildInputs = commonBuildInputs ++ [ ];
-      nativeBuildInputs = commonBuildInputs ++ [ ];
-      propagatedNativeBuildInputs = commonBuildInputs ++ [ ];
       propagatedBuildInputs = [
         self."pyasn1"
       ];
       meta = with pkgs.stdenv.lib; {
         homepage = "https://stuvel.eu/rsa";
-        license = "ASL 2";
+        license = licenses.asl20;
         description = "Pure-Python RSA implementation";
       };
     };
@@ -343,12 +299,9 @@ let
       src = pkgs.fetchurl {
         url = "https://files.pythonhosted.org/packages/39/12/150cd55c606ebca6725683642a8e7068cd6af10f837ce5419a9f16b7fb55/s3transfer-0.2.1.tar.gz";
         sha256 = "6efc926738a3cd576c2a79725fed9afde92378aa5c6a957e3af010cb019fac9d";
-      };
+};
       doCheck = commonDoCheck;
-      checkInputs = commonBuildInputs ++ [ ];
       buildInputs = commonBuildInputs ++ [ ];
-      nativeBuildInputs = commonBuildInputs ++ [ ];
-      propagatedNativeBuildInputs = commonBuildInputs ++ [ ];
       propagatedBuildInputs = [
         self."botocore"
       ];
@@ -359,17 +312,46 @@ let
       };
     };
 
-    "six" = python.mkDerivation {
-      name = "six-1.12.0";
+    "setuptools" = python.mkDerivation {
+      name = "setuptools-41.6.0";
       src = pkgs.fetchurl {
-        url = "https://files.pythonhosted.org/packages/dd/bf/4138e7bfb757de47d1f4b6994648ec67a51efe58fa907c1e11e350cddfca/six-1.12.0.tar.gz";
-        sha256 = "d16a0141ec1a18405cd4ce8b4613101da75da0e9a7aec5bdd4fa804d0e0eba73";
-      };
+        url = "https://files.pythonhosted.org/packages/11/0a/7f13ef5cd932a107cd4c0f3ebc9d831d9b78e1a0e8c98a098ca17b1d7d97/setuptools-41.6.0.zip";
+        sha256 = "6afa61b391dcd16cb8890ec9f66cc4015a8a31a6e1c2b4e0c464514be1a3d722";
+};
       doCheck = commonDoCheck;
-      checkInputs = commonBuildInputs ++ [ ];
       buildInputs = commonBuildInputs ++ [ ];
-      nativeBuildInputs = commonBuildInputs ++ [ ];
-      propagatedNativeBuildInputs = commonBuildInputs ++ [ ];
+      propagatedBuildInputs = [ ];
+      meta = with pkgs.stdenv.lib; {
+        homepage = "https://github.com/pypa/setuptools";
+        license = licenses.mit;
+        description = "Easily download, build, install, upgrade, and uninstall Python packages";
+      };
+    };
+
+    "setuptools-scm" = python.mkDerivation {
+      name = "setuptools-scm-3.3.3";
+      src = pkgs.fetchurl {
+        url = "https://files.pythonhosted.org/packages/83/44/53cad68ce686585d12222e6769682c4bdb9686808d2739671f9175e2938b/setuptools_scm-3.3.3.tar.gz";
+        sha256 = "bd25e1fb5e4d603dcf490f1fde40fb4c595b357795674c3e5cb7f6217ab39ea5";
+};
+      doCheck = commonDoCheck;
+      buildInputs = commonBuildInputs ++ [ ];
+      propagatedBuildInputs = [ ];
+      meta = with pkgs.stdenv.lib; {
+        homepage = "https://github.com/pypa/setuptools_scm/";
+        license = licenses.mit;
+        description = "the blessed package to manage your versions by scm tags";
+      };
+    };
+
+    "six" = python.mkDerivation {
+      name = "six-1.13.0";
+      src = pkgs.fetchurl {
+        url = "https://files.pythonhosted.org/packages/94/3e/edcf6fef41d89187df7e38e868b2dd2182677922b600e880baad7749c865/six-1.13.0.tar.gz";
+        sha256 = "30f610279e8b2578cab6db20741130331735c781b56053c59c4076da27f06b66";
+};
+      doCheck = commonDoCheck;
+      buildInputs = commonBuildInputs ++ [ ];
       propagatedBuildInputs = [ ];
       meta = with pkgs.stdenv.lib; {
         homepage = "https://github.com/benjaminp/six";
@@ -379,16 +361,13 @@ let
     };
 
     "soupsieve" = python.mkDerivation {
-      name = "soupsieve-1.9.1";
+      name = "soupsieve-1.9.5";
       src = pkgs.fetchurl {
-        url = "https://files.pythonhosted.org/packages/fb/9e/2e236603b058daa6820193d4d95f4dcfbbbd0d3c709bec8c6ef1b1902501/soupsieve-1.9.1.tar.gz";
-        sha256 = "b20eff5e564529711544066d7dc0f7661df41232ae263619dede5059799cdfca";
-      };
+        url = "https://files.pythonhosted.org/packages/92/cf/57dfed8a00f4ba33af3a6615d693bb65a19a11e26ab13293f62359216417/soupsieve-1.9.5.tar.gz";
+        sha256 = "e2c1c5dee4a1c36bcb790e0fabd5492d874b8ebd4617622c4f6a731701060dda";
+};
       doCheck = commonDoCheck;
-      checkInputs = commonBuildInputs ++ [ ];
       buildInputs = commonBuildInputs ++ [ ];
-      nativeBuildInputs = commonBuildInputs ++ [ ];
-      propagatedNativeBuildInputs = commonBuildInputs ++ [ ];
       propagatedBuildInputs = [ ];
       meta = with pkgs.stdenv.lib; {
         homepage = "https://github.com/facelessuser/soupsieve";
@@ -398,16 +377,13 @@ let
     };
 
     "urllib3" = python.mkDerivation {
-      name = "urllib3-1.25.3";
+      name = "urllib3-1.25.7";
       src = pkgs.fetchurl {
-        url = "https://files.pythonhosted.org/packages/4c/13/2386233f7ee40aa8444b47f7463338f3cbdf00c316627558784e3f542f07/urllib3-1.25.3.tar.gz";
-        sha256 = "dbe59173209418ae49d485b87d1681aefa36252ee85884c31346debd19463232";
-      };
+        url = "https://files.pythonhosted.org/packages/ad/fc/54d62fa4fc6e675678f9519e677dfc29b8964278d75333cf142892caf015/urllib3-1.25.7.tar.gz";
+        sha256 = "f3c5fd51747d450d4dcf6f923c81f78f811aab8205fda64b0aba34a4e48b0745";
+};
       doCheck = commonDoCheck;
-      checkInputs = commonBuildInputs ++ [ ];
       buildInputs = commonBuildInputs ++ [ ];
-      nativeBuildInputs = commonBuildInputs ++ [ ];
-      propagatedNativeBuildInputs = commonBuildInputs ++ [ ];
       propagatedBuildInputs = [ ];
       meta = with pkgs.stdenv.lib; {
         homepage = "https://urllib3.readthedocs.io/";
@@ -415,11 +391,27 @@ let
         description = "HTTP library with thread-safe connection pooling, file post, and more.";
       };
     };
+
+    "wheel" = python.mkDerivation {
+      name = "wheel-0.33.6";
+      src = pkgs.fetchurl {
+        url = "https://files.pythonhosted.org/packages/59/b0/11710a598e1e148fb7cbf9220fd2a0b82c98e94efbdecb299cb25e7f0b39/wheel-0.33.6.tar.gz";
+        sha256 = "10c9da68765315ed98850f8e048347c3eb06dd81822dc2ab1d4fde9dc9702646";
+};
+      doCheck = commonDoCheck;
+      buildInputs = commonBuildInputs ++ [ ];
+      propagatedBuildInputs = [ ];
+      meta = with pkgs.stdenv.lib; {
+        homepage = "https://github.com/pypa/wheel";
+        license = licenses.mit;
+        description = "A built-package format for Python.";
+      };
+    };
   };
   localOverridesFile = ./requirements_override.nix;
   localOverrides = import localOverridesFile { inherit pkgs python; };
   commonOverrides = [
-    
+        (let src = pkgs.fetchFromGitHub { owner = "nix-community"; repo = "pypi2nix-overrides"; rev = "db87933d87d9b3943cf636a49f16b76c9ea66db7"; sha256 = "1phiqh72dyg7qhkv15kdg4gjkx8rkywvs41j7liz5faj66ijlpv6"; } ; in import "${src}/overrides.nix" { inherit pkgs python; })
   ];
   paramOverrides = [
     (overrides { inherit pkgs python; })
