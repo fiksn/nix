@@ -25,6 +25,7 @@ let
 
        hosts_file ${osHosts}
        visible_hostname proxy
+       pid_filename none
        access_log none
        http_port 3128
      '';
