@@ -63,7 +63,7 @@ pkgs.stdenv.mkDerivation {
     python.packages."python-heatclient"
     python.packages."python-swiftclient"
     python.packages."ipcalc"
-    python.packages."ruamel.yaml"
+    python.packages."ruamel-yaml"
     python.packages."deepdiff"
   ];
 
