@@ -65,6 +65,7 @@ in
 	"i3/status-netns"           .source = ./config/i3status-netns;
 	"X11/xresources"            .source = ./config/xresources;
 	"display.sh"                .source = ./config/display.sh;
+	"lock.sh"                   .source = ./config/lock.sh;
       };
     };
 

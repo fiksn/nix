@@ -34,7 +34,6 @@ in
 	  "git"
 	  "git-extras"
 	  "git-prompt"
-	  "nix"
 	  "per-directory-history"
 	  "sudo"
 	  "systemd"
