@@ -70,6 +70,8 @@ in
   networking.wireless.enable = true;
   #networking.networkmanager.enable = true;
 
+  nix.extraOptions = "keep-outputs = true";
+
   powerManagement.enable = true;
   hardware.bluetooth.enable = true;
   hardware.pulseaudio = {
