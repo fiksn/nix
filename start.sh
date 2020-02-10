@@ -5,6 +5,6 @@
 mkdir -p .gcroots
 
 # add shell as gc-root in /nix/var/nix/gcroots/auto
-nix-instantiate default.nix --indirect --add-root $PWD/.gcroots/shell.drv
+nix-instantiate ./default.nix --indirect --add-root $PWD/.gcroots/default.drv
 
-exec nix-shell $(readlink $PWD/.gcroots/shell.drv) "$@"
+exec nix-shell $(readlink $PWD/.gcroots/default.drv) "$@"

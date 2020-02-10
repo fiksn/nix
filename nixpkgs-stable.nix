@@ -12,7 +12,7 @@
 
 import (builtins.fetchTarball {
   name = "nixpkgs-stable";
-  url = https://github.com/NixOS/nixpkgs/archive/19.09.tar.gz;
-  sha256 = "0mhqhq21y5vrr1f30qd2bvydv4bbbslvyzclhw0kdxmkgg3z4c92";
+  url = https://github.com/NixOS/nixpkgs/archive/cae7840b7639c56ad619cb8fb8f921298ae385b7.tar.gz;
+  sha256 = "1mr5bp3vnag9nihcz1l0hdvm2n8n7lm84qh3cynbp00rcpwy0mhc";
 }) {}
 

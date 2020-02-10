@@ -43,6 +43,7 @@ pkgs.stdenv.mkDerivation {
     python.packages."boto3"
     python.packages."boto"
     python.packages."awscli"
+    python.packages."cfn-lint"
   ];
 
   shellHook = ''
@@ -63,7 +64,7 @@ pkgs.stdenv.mkDerivation {
 
     # if ~/.aws/config is pointing to nix store you can safely overwrite it
     mkdir -p ~/.aws
-    if [ -L  ~/.aws/config ] && $(readlink -f $AWS_CONFIG | grep -q '^/nix/store'); then
+    if [ -L  ~/.aws/config ] && ($(readlink $AWS_CONFIG | grep -q '^/nix/store') || $(echo $AWS_CONFIG | grep -q '^/nix/store')); then
       ln -fs $AWS_CONFIG ~/.aws/config
     elif [ -f ~/.aws/config ]; then
       # Else backup and overwrite
