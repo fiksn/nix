@@ -54,6 +54,7 @@ in
         gnupg
         keepnote
         lxrandr
+        nitrogen
       ];
 
       etc = {

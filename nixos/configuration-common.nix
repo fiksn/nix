@@ -149,6 +149,7 @@ in
       "wheel"
       "fuse"
       "socksified"
+      "libvirtd"
     ];
   };
 

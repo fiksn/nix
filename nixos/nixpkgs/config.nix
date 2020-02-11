@@ -4,5 +4,6 @@
   allowUnfree = true;
   pulseaudio = true;
   dmenu.enableXft = true;
+  allowUnsupportedSystem = true; 
 }
 
