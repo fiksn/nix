@@ -538,6 +538,7 @@ let
       buildInputs = commonBuildInputs ++ [ ];
       propagatedBuildInputs = [
         self."six"
+        self."pbr"
       ];
       meta = with pkgs.stdenv.lib; {
         homepage = "https://github.com/Infinidat/munch";
@@ -1227,6 +1228,7 @@ let
       propagatedBuildInputs = [
         self."requests"
         self."six"
+        self."pbr"
       ];
       meta = with pkgs.stdenv.lib; {
         homepage = "https://docs.openstack.org/python-swiftclient/latest/";
@@ -1300,7 +1302,9 @@ let
       doCheck = commonDoCheck;
       format = "setuptools";
       buildInputs = commonBuildInputs ++ [ ];
-      propagatedBuildInputs = [ ];
+      propagatedBuildInputs = [ 
+        self."pbr"
+      ];
       meta = with pkgs.stdenv.lib; {
         homepage = "http://www.openstack.org/";
         license = licenses.asl20;
