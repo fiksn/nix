@@ -81,6 +81,9 @@ in
 	enable = true;
 	libinput.enable = true;
 	layout = "si";
+        displayManager = {
+          defaultSession = "xfce";
+        };
 	desktopManager = {
 	  session = [
 	    {
@@ -98,7 +101,6 @@ in
 	    }
 	  ];
 
-	  default = "xfce";
 	  xterm.enable = false;
 	  xfce = {
 	    enable = true;
@@ -107,7 +109,6 @@ in
 	  };
 	};
 
-	displayManager.slim.theme = solarized-theme;
 	windowManager.i3 = {
 	  enable = true;
 	  extraPackages = with pkgs; [

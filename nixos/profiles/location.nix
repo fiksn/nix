@@ -20,9 +20,9 @@ in
       servers = [ "ntp1.arnes.si" "ntp2.arnes.si" ];
     };
     time.timeZone = "Europe/Ljubljana";
+    console.keyMap = "slovene";
     i18n = {
       #consoleFont = "lat9w-16";
-      consoleKeyMap = "slovene";
       defaultLocale = "sl_SI.UTF-8";
     };
   };

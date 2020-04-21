@@ -13,6 +13,7 @@ in
   nixpkgs = import ./nixpkgs;
 
   imports =
+    [ ./cachix.nix ] ++ 
     [ ./data.nix ./roles/common.nix ./nix.nix ./fonts.nix ] ++
     # Other stuff
     [ ./other/qemu.nix ] ++
@@ -46,16 +47,16 @@ in
 
   networking.hostName = "present";
 
-  system.stateVersion = "19.09";
+  system.stateVersion = "20.03";
 
-  boot.initrd.luks.devices = [
-    {
-      name = "root";
+  boot.initrd.luks.devices = 
+  {
+    root = { 
       device = "/dev/disk/by-uuid/644e1f44-c76b-4cb8-9c53-485d7c006d64";
       preLVM = true;
       allowDiscards = true;
-    }
-  ];
+    };
+  };
 
   fileSystems."/".options = [ "noatime" "nodiratime" "discard" ];
 
