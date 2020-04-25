@@ -60,7 +60,7 @@ in
 
   fileSystems."/".options = [ "noatime" "nodiratime" "discard" ];
 
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackages_5_4;
 
   # Or else I keep getting Corrected error dmesg spam
   boot.kernelParams = [ "pci=noaer" ];
