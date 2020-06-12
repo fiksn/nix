@@ -1,6 +1,8 @@
-{ pkgs ? import <nixpkgs> {}, project, id, username, jmpHost }:
+{ pkgs ? import <nixpkgs> {}, project, id }:
 
 let 
+   username = pkgs.lib.maybeEnv "ZRH_USERNAME" "g.pogacnik";
+   jmpHost = pkgs.lib.maybeEnv "JMP_HOST" "10.27.100.2";
    python = import ./requirements.nix { inherit pkgs; };
    pass = import ../os-password.nix;
 
@@ -32,7 +34,7 @@ let
    };
 
    osProxyOn = pkgs.writeShellScriptBin "os-proxy-on" ''
-     ${pkgs.openssh}/bin/ssh -L9311:10.208.2.12:9311 -L8776:10.208.2.12:8776 -L 9292:10.208.2.12:9292 -L8000:10.208.2.12:8000 -L8004:10.208.2.12:8004 -L35357:10.208.2.12:35357 -L5000:10.208.2.12:5000 -L9696:10.208.2.12:9696 -L8774:10.208.2.12:8774 -L1080:10.208.2.12:80 -L10443:10.208.2.12:443 ${jmpHost} -N&
+     ${pkgs.openssh}/bin/ssh -L9311:10.208.2.12:9311 -L8776:10.208.2.12:8776 -L 9292:10.208.2.12:9292 -L8000:10.208.2.12:8000 -L8004:10.208.2.12:8004 -L35357:10.208.2.12:35357 -L5000:10.208.2.12:5000 -L9696:10.208.2.12:9696 -L8774:10.208.2.12:8774 -L1080:10.208.2.12:80 -L10443:10.208.2.12:443 -L6080:10.208.2.12:6080 -L6081:10.208.2.12:6081 -L17523:10.208.2.12:17523 ${jmpHost} -N&
      ${pkgs.squid}/bin/squid -f ${squidConfig} -N&
      export http_proxy=http://127.0.0.1:3128/
      export https_proxy=http://127.0.1:3128/    
@@ -46,7 +48,7 @@ let
 
 in
 
-pkgs.stdenv.mkDerivation {
+pkgs.mkShell {
   name = "${project}-openstack";
 
   buildInputs = [

@@ -1,6 +1,7 @@
-{ username ? "g.pogacnik", pkgs ? import ../nixpkgs-stable.nix }:
+{ pkgs ? import ../nixpkgs-stable.nix }:
 
 let 
+   username = pkgs.lib.maybeEnv "ZRH_USERNAME" "g.pogacnik";
    python = import ./requirements.nix { inherit pkgs; };
    gems = pkgs.bundlerEnv {
      name = "aws-gems";
@@ -27,7 +28,7 @@ let
 
 in
 
-pkgs.stdenv.mkDerivation {
+pkgs.mkShell {
   name = "aws";
 
   buildInputs = [
@@ -52,6 +53,12 @@ pkgs.stdenv.mkDerivation {
     echo "You now have aws and stack_master tools available in your shell."
     echo "For web-login use https://myapps.microsoft.com"
     echo "Regarding the login-prompt press CTRL-C if you have previously logged-in or ~/.aws/credentials still contains valid credentials."
+
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+      echo ""
+      echo "!!!IMPORTANT!!!: Make sure under Docker / Preferences / Resources / File Sharing /nix is added"
+      echo ""
+    fi
 
     while true; do
       read -p "Use sandbox (y/n)? " choice
