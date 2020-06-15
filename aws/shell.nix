@@ -2,12 +2,6 @@
 
 let 
    username = pkgs.lib.maybeEnv "ZRH_USERNAME" "g.pogacnik";
-   python = import ./requirements.nix { inherit pkgs; };
-   gems = pkgs.bundlerEnv {
-     name = "aws-gems";
-     ruby = pkgs.ruby;
-     gemdir = ./.;
-   };
 
    awsConfigFileWriter = id: pkgs.writeTextFile {
      name = "aws-user-config";
@@ -25,6 +19,7 @@ let
 
    awsConfig = awsConfigFileWriter "a43d895e-e3f3-42b9-bb13-3191f61ef11d";
    awsConfigSandbox = awsConfigFileWriter "2cd75673-2d37-4a7c-ac4c-5e163113adff";
+   awsTools = pkgs.callPackage ./. { };
 
 in
 
@@ -39,12 +34,7 @@ pkgs.mkShell {
     pkgs.gnugrep
     pkgs.docker
     pkgs.ruby
-    gems
-    python.packages."beautifulsoup4"
-    python.packages."boto3"
-    python.packages."boto"
-    python.packages."awscli"
-    python.packages."cfn-lint"
+    awsTools
   ];
 
   shellHook = ''
