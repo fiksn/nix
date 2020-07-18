@@ -35,6 +35,14 @@ in
     aarch64 = true;
   };
 
+  nix = {
+    package = pkgs.nixFlakes;
+    extraOptions = lib.optionalString (config.nix.package == pkgs.nixFlakes)
+      ''experimental-features = nix-command flakes
+        keep-outputs = true
+      '';
+  };
+
   # Test
   #services.kubernetes = {
   #  roles = ["master" "node"];
@@ -70,8 +78,6 @@ in
   # wpa_passphrase MyWifiSSID MySecretPassword > wpa_supplicant.conf
   networking.wireless.enable = true;
   #networking.networkmanager.enable = true;
-
-  nix.extraOptions = "keep-outputs = true";
 
   powerManagement.enable = true;
   hardware.bluetooth.enable = true;

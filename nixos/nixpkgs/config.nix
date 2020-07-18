@@ -1,6 +1,6 @@
 {
   oraclejdk.accept_license = true;
-  allowBroken = false;
+  allowBroken = true;
   allowUnfree = true;
   pulseaudio = true;
   dmenu.enableXft = true;

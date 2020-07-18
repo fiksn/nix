@@ -3,7 +3,6 @@
 with lib;
 
 {
-  nix.package = pkgs.nixUnstable;
   nix.useSandbox = true;
 
   # automatic gc
