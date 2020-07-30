@@ -19,5 +19,6 @@ pkgs.symlinkJoin {
     python.packages."boto"
     python.packages."awscli"
     python.packages."cfn-lint"
+    python.packages."ec2instanceconnectcli"
   ];
 }
