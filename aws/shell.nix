@@ -20,6 +20,7 @@ let
    asmr = pkgs.writeShellScriptBin "asmr" ''
      PROJECT=''${PROJECT:-"mts"}
      aws ec2 describe-instances --filters "Name=tag:Project,Values=$PROJECT" | jq '.Reservations[].Instances[] | (.InstanceId + "|" + .InstanceType + "|" + .PrivateIpAddress + "|" + .PublicIpAddress + "|" + .Placement.AvailabilityZone + "|" + .State.Name) + "|" + ((.Tags // [ { "Key": "Name", "Value": "" } ])[] | select(.Key=="Name") | .Value)' | tr -d '"'
+     aws ec2 describe-instances --filters "Name=tag:KubernetesCluster,Values=*$PROJECT*" | jq '.Reservations[].Instances[] | (.InstanceId + "|" + .InstanceType + "|" + .PrivateIpAddress + "|" + .PublicIpAddress + "|" + .Placement.AvailabilityZone + "|" + .State.Name) + "|" + ((.Tags // [ { "Key": "Name", "Value": "" } ])[] | select(.Key=="Name") | .Value)' | tr -d '"'
    '';
 
    awsConfig = awsConfigFileWriter "a43d895e-e3f3-42b9-bb13-3191f61ef11d";
@@ -84,6 +85,6 @@ pkgs.mkShell {
     docker run --rm -it -v ~/.aws:/root/.aws -v $AWS_CONFIG:$AWS_CONFIG dtjohnson/aws-azure-login
    
     aws sts get-caller-identity
-    aws iam get-user
+    #aws iam get-user
   '';
 }
