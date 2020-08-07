@@ -16,6 +16,11 @@ let
        azure_default_duration_hours=1
      '';
    };
+ 
+   asmr = pkgs.writeShellScriptBin "asmr" ''
+     PROJECT=''${PROJECT:-"mts"}
+     aws ec2 describe-instances --filters "Name=tag:Project,Values=$PROJECT" | jq '.Reservations[].Instances[] | (.InstanceId + "|" + .InstanceType + "|" + .PrivateIpAddress + "|" + .PublicIpAddress + "|" + .Placement.AvailabilityZone) + " " + ((.Tags // [ { "Key": "Name", "Value": "" } ])[] | select(.Key=="Name") | .Value)' | tr -d '"'
+   '';
 
    awsConfig = awsConfigFileWriter "a43d895e-e3f3-42b9-bb13-3191f61ef11d";
    awsConfigSandbox = awsConfigFileWriter "2cd75673-2d37-4a7c-ac4c-5e163113adff";
@@ -27,6 +32,7 @@ pkgs.mkShell {
   name = "aws";
 
   buildInputs = [
+    asmr
     pkgs.figlet
     pkgs.lolcat
     pkgs.coreutils
