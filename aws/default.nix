@@ -14,11 +14,5 @@ pkgs.symlinkJoin {
 
   paths = [
     gems
-    python.packages."beautifulsoup4"
-    python.packages."boto3"
-    python.packages."boto"
-    python.packages."awscli"
-    python.packages."cfn-lint"
-    python.packages."ec2instanceconnectcli"
-  ];
+  ] ++ builtins.attrValues python.packages;
 }
