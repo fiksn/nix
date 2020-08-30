@@ -19,8 +19,13 @@ let
  
    asmr = pkgs.writeShellScriptBin "asmr" ''
      PROJECT=''${PROJECT:-"mts"}
-     aws ec2 describe-instances --filters "Name=tag:Project,Values=$PROJECT" | jq '.Reservations[].Instances[] | (.InstanceId + "|" + .InstanceType + "|" + .PrivateIpAddress + "|" + .PublicIpAddress + "|" + .Placement.AvailabilityZone + "|" + .State.Name) + "|" + ((.Tags // [ { "Key": "Name", "Value": "" } ])[] | select(.Key=="Name") | .Value)' | tr -d '"'
-     aws ec2 describe-instances --filters "Name=tag:KubernetesCluster,Values=*$PROJECT*" | jq '.Reservations[].Instances[] | (.InstanceId + "|" + .InstanceType + "|" + .PrivateIpAddress + "|" + .PublicIpAddress + "|" + .Placement.AvailabilityZone + "|" + .State.Name) + "|" + ((.Tags // [ { "Key": "Name", "Value": "" } ])[] | select(.Key=="Name") | .Value)' | tr -d '"'
+     ALL=''${ALL:-"false"}
+     if [ "$ALL" = "true" ]; then
+       aws ec2 describe-instances | jq '.Reservations[].Instances[] | (.InstanceId + "|" + .InstanceType + "|" + .PrivateIpAddress + "|" + .PublicIpAddress + "|" + .Placement.AvailabilityZone + "|" + .State.Name) + "|" + ((.Tags // [ { "Key": "Name", "Value": "" } ])[] | select(.Key=="Name") | .Value)' | tr -d '"'
+     else
+       aws ec2 describe-instances --filters "Name=tag:Project,Values=$PROJECT" | jq '.Reservations[].Instances[] | (.InstanceId + "|" + .InstanceType + "|" + .PrivateIpAddress + "|" + .PublicIpAddress + "|" + .Placement.AvailabilityZone + "|" + .State.Name) + "|" + ((.Tags // [ { "Key": "Name", "Value": "" } ])[] | select(.Key=="Name") | .Value)' | tr -d '"'
+       aws ec2 describe-instances --filters "Name=tag:KubernetesCluster,Values=*$PROJECT*" | jq '.Reservations[].Instances[] | (.InstanceId + "|" + .InstanceType + "|" + .PrivateIpAddress + "|" + .PublicIpAddress + "|" + .Placement.AvailabilityZone + "|" + .State.Name) + "|" + ((.Tags // [ { "Key": "Name", "Value": "" } ])[] | select(.Key=="Name") | .Value)' | tr -d '"'
+     fi
    '';
 
    awsConfig = awsConfigFileWriter "a43d895e-e3f3-42b9-bb13-3191f61ef11d";
