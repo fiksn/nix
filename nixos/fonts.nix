@@ -46,7 +46,8 @@
       pkgs.ubuntu_font_family
       pkgs.vistafonts
       pkgs.corefonts
-      pkgs.monoid
+      # Broken
+      #pkgs.monoid
     ];
   };
 

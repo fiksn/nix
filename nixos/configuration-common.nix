@@ -43,6 +43,19 @@ in
       '';
   };
 
+  services.dhcpd4 = {
+    enable = true;
+    interfaces = [ "enp3s0" ];
+    extraConfig = ''
+      option subnet-mask 255.255.255.0;
+      option routers 192.168.2.1;
+      option domain-name-servers 1.1.1.1;
+      subnet 192.168.2.0 netmask 255.255.255.0 {
+        range 192.168.2.2 192.168.2.3;
+      }
+    '';
+  };
+
   # Test
   #services.kubernetes = {
   #  roles = ["master" "node"];
