@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, python, pkgconfig, zlib, glib, user_arch, flex, bison,
+{ stdenv, fetchurl, python3, pkgconfig, zlib, glib, user_arch, flex, bison,
 makeStaticLibraries, glibc, qemu, fetchFromGitHub }:
 
 let
@@ -24,18 +24,18 @@ stdenv.mkDerivation rec {
   name = "qemu-user-${user_arch}-${version}";
   version = "3.1.0";
   src = if is_riscv then riscv_src else qemu.src;
-  buildInputs = [ python pkgconfig zlib.static myglib flex bison glibc.static ];
+  buildInputs = [ python3 pkgconfig zlib.static myglib flex bison glibc.static ];
   patches = [ ./qemu-stack.patch ];
   configureFlags = [
     "--enable-linux-user" "--target-list=${user_arch}-linux-user"
     "--disable-bsd-user" "--disable-system" "--disable-vnc"
     "--disable-curses" "--disable-sdl" "--disable-vde"
-    "--disable-bluez" "--disable-kvm"
+    "--disable-kvm"
     "--static"
     "--disable-tools"
     "--cpu=${arch_map.${user_arch}}"
   ];
-  NIX_LDFLAGS = [ "-lglib-2.0" ];
+  NIX_LDFLAGS = [ "-lglib-2.0" "-lpthread" ];
   enableParallelBuilding = true;
   postInstall = ''
     cc -static ${./qemu-wrap.c} -D QEMU_ARM_BIN="\"qemu-${user_arch}"\" -o $out/bin/qemu-wrap

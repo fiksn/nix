@@ -12,9 +12,6 @@ with lib;
     options = "--delete-older-than 30d";
   };
   
-  services.nixosManual.showManual = false;
-  documentation.man.enable = true;
-
   # disable the infamous systemd screen/tmux killer
   services.logind.extraConfig = ''
     KillUserProcesses=no

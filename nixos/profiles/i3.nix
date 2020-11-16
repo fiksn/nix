@@ -82,7 +82,7 @@ in
 	libinput.enable = true;
 	layout = "si";
         displayManager = {
-          defaultSession = "xfce";
+          defaultSession = "xfce+i3";
         };
 	desktopManager = {
 	  session = [
