@@ -6,7 +6,7 @@ cffi==1.14.0
 chardet==3.0.4
 cliff==2.18.0
 cmd2==0.8.9
-cryptography==2.8
+cryptography==3.2.1
 debtcollector==2.0.0
 decorator==4.4.1
 deepdiff==4.2.0

@@ -280,10 +280,10 @@ let
     };
 
     "cryptography" = python.mkDerivation {
-      name = "cryptography-3.0";
+      name = "cryptography-3.2.1";
       src = pkgs.fetchurl {
-        url = "https://files.pythonhosted.org/packages/bf/ac/552fc8729d90393845cc3a2062facf4a89dcbe206fa78771d60ddaae7554/cryptography-3.0.tar.gz";
-        sha256 = "8e924dbc025206e97756e8903039662aa58aa9ba357d8e1d8fc29e3092322053";
+        url = "https://files.pythonhosted.org/packages/94/5c/42de91c7fbdb817b2d9a4e64b067946eb38a4eb36c1a09c96c87a0f86a82/cryptography-3.2.1.tar.gz";
+        sha256 = "d3d5e10be0cf2a12214ddee45c6bd203dab435e3d83b4560c03066eda600bfe3";
 };
       doCheck = commonDoCheck;
       format = "pyproject";

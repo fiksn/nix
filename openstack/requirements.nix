@@ -233,10 +233,10 @@ let
     };
 
     "cryptography" = python.mkDerivation {
-      name = "cryptography-2.8";
+      name = "cryptography-3.2.1";
       src = pkgs.fetchurl {
-        url = "https://files.pythonhosted.org/packages/be/60/da377e1bed002716fb2d5d1d1cab720f298cb33ecff7bf7adea72788e4e4/cryptography-2.8.tar.gz";
-        sha256 = "3cda1f0ed8747339bbdf71b9f38ca74c7b592f24f65cdb3ab3765e4b02871651";
+        url = "https://files.pythonhosted.org/packages/94/5c/42de91c7fbdb817b2d9a4e64b067946eb38a4eb36c1a09c96c87a0f86a82/cryptography-3.2.1.tar.gz";
+        sha256 = "d3d5e10be0cf2a12214ddee45c6bd203dab435e3d83b4560c03066eda600bfe3";
 };
       doCheck = commonDoCheck;
       format = "pyproject";
