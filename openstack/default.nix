@@ -1,4 +1,4 @@
-{ pkgs ? import <nixpkgs> {} }:
+{ pkgs ? import ../nixpkgs-stable.nix }:
 
 let 
    python = import ./requirements.nix { inherit pkgs; };
