@@ -5,4 +5,5 @@
 *.pass
 result
 .gcroots
+.envrc
 

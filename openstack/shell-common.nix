@@ -3,7 +3,7 @@
 let 
    username = pkgs.lib.maybeEnv "ZRH_USERNAME" "g.pogacnik";
    jmpHost = pkgs.lib.maybeEnv "JMP_HOST" "10.27.100.2";
-   pass = import ../os-password.nix;
+   pass = pkgs.lib.maybeEnv "OS_PASSWORD" "";
 
    osHosts = pkgs.writeTextFile {
      name = "hosts";
