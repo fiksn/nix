@@ -221,14 +221,16 @@ let
     };
 
     "cffi" = python.mkDerivation {
-      name = "cffi-1.14.1";
+      name = "cffi-1.14.5";
       src = pkgs.fetchurl {
-        url = "https://files.pythonhosted.org/packages/54/1d/15eae71ab444bd88a1d69f19592dcf32b9e3166ecf427dd9243ef0d3b7bc/cffi-1.14.1.tar.gz";
-        sha256 = "b2a2b0d276a136146e012154baefaea2758ef1f56ae9f4e01c612b0831e0bd2f";
+        url = "https://files.pythonhosted.org/packages/a8/20/025f59f929bbcaa579704f443a438135918484fffaacfaddba776b374563/cffi-1.14.5.tar.gz";
+        sha256 = "fd78e5fee591709f32ef6edb9a015b4aa1a5022598e36227500c8f4e02328d9c";
 };
       doCheck = commonDoCheck;
       format = "setuptools";
-      buildInputs = commonBuildInputs ++ [ ];
+      buildInputs = commonBuildInputs ++ [
+
+      ];
       propagatedBuildInputs = [
         self."pycparser"
       ];
@@ -236,6 +238,30 @@ let
         homepage = "http://cffi.readthedocs.org";
         license = licenses.mit;
         description = "Foreign Function Interface for Python calling C code.";
+      };
+    };
+
+    "cryptography" = python.mkDerivation {
+      name = "cryptography-3.3.2";
+      src = pkgs.fetchurl {
+        url = "https://files.pythonhosted.org/packages/d4/85/38715448253404186029c575d559879912eb8a1c5d16ad9f25d35f7c4f4c/cryptography-3.3.2.tar.gz";
+        sha256 = "5a60d3780149e13b7a6ff7ad6526b38846354d11a15e21068e57073e29e19bed";
+};
+      doCheck = commonDoCheck;
+      format = "pyproject";
+      buildInputs = commonBuildInputs ++ [
+        self."cffi"
+        self."setuptools"
+        self."wheel"
+      ];
+      propagatedBuildInputs = [
+        self."cffi"
+        self."six"
+      ];
+      meta = with pkgs.stdenv.lib; {
+        homepage = "https://github.com/pyca/cryptography";
+        license = licenses.asl20;
+        description = "cryptography is a package which provides cryptographic recipes and primitives to Python developers.";
       };
     };
 
@@ -276,30 +302,6 @@ let
         homepage = "https://github.com/tartley/colorama";
         license = licenses.bsdOriginal;
         description = "Cross-platform colored terminal text.";
-      };
-    };
-
-    "cryptography" = python.mkDerivation {
-      name = "cryptography-3.2.1";
-      src = pkgs.fetchurl {
-        url = "https://files.pythonhosted.org/packages/94/5c/42de91c7fbdb817b2d9a4e64b067946eb38a4eb36c1a09c96c87a0f86a82/cryptography-3.2.1.tar.gz";
-        sha256 = "d3d5e10be0cf2a12214ddee45c6bd203dab435e3d83b4560c03066eda600bfe3";
-};
-      doCheck = commonDoCheck;
-      format = "pyproject";
-      buildInputs = commonBuildInputs ++ [
-        self."cffi"
-        self."setuptools"
-        self."wheel"
-      ];
-      propagatedBuildInputs = [
-        self."cffi"
-        self."six"
-      ];
-      meta = with pkgs.stdenv.lib; {
-        homepage = "https://github.com/pyca/cryptography";
-        license = licenses.asl20;
-        description = "cryptography is a package which provides cryptographic recipes and primitives to Python developers.";
       };
     };
 
