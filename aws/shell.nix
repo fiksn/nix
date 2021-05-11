@@ -50,6 +50,11 @@ pkgs.mkShell {
   ];
 
   shellHook = ''
+    if [ -n "$AWS_PROMPT_SHOWN" ]; then
+      return
+    fi
+
+    export AWS_PROMPT_SHOWN="true"
     export PS1='\n\[\033[1;32m\][aws:\w]\$\[\033[0m\] '
     figlet "AWS" | lolcat --freq 0.5
     echo "You now have aws and stack_master tools available in your shell."
