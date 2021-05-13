@@ -1,6 +1,10 @@
-{ pkgs ? import ../nixpkgs-stable.nix }:
+{ sources ? import ../nix/sources.nix
+, pkgs ? import sources.nixpkgs {}
+}:
 
 let 
+   pmenu = pkgs.callPackage ./pmenu.nix {};
+
    username = pkgs.lib.maybeEnv "ZRH_USERNAME" "g.pogacnik";
 
    awsConfigFileWriter = id: pkgs.writeTextFile {
@@ -38,6 +42,7 @@ pkgs.mkShell {
   name = "aws";
 
   buildInputs = [
+    pmenu
     asmr
     pkgs.figlet
     pkgs.lolcat

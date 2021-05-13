@@ -1,18 +1,28 @@
-{ pkgs ? import ../nixpkgs-stable.nix }:
+{ sources ? import ../nix/sources.nix
+, pkgs ? import sources.nixpkgs {}
+, master ? import sources.master {}
+}:
 
 let 
-   python = import ./requirements.nix { inherit pkgs; };
+   awscli = pkgs.awscli2;
+   python = awscli.passthru.python;
    gems = pkgs.bundlerEnv {
      name = "aws-gems";
      ruby = pkgs.ruby;
      gemdir = ./.;
    };
 in
-
 pkgs.symlinkJoin { 
   name = "aws-tools";
 
   paths = [
     gems
-  ] ++ builtins.attrValues python.packages;
+    awscli
+
+    master.python38Packages.boto3
+    #python.pkgs.boto3
+
+    master.python38Packages.ec2instanceconnectcli
+    master.python38Packages.cfn-lint
+  ];
 }
