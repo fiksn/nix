@@ -9,7 +9,6 @@ let
    gems = pkgs.bundlerEnv {
      name = "aws-gems";
      ruby = pkgs.ruby;
-     gpgme = pkgs.gpgme;
      gemdir = ./.;
    };
 in
