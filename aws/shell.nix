@@ -97,7 +97,7 @@ pkgs.mkShell {
     fi
 
     # Directly installing aws-azure-login through npm is a PITA
-    docker run --rm -it -v ~/.aws:/root/.aws -v $AWS_CONFIG:$AWS_CONFIG dtjohnson/aws-azure-login
+    docker run --rm -it -v ~/.aws:/root/.aws -v $AWS_CONFIG:$AWS_CONFIG sportradar/aws-azure-login
    
     aws sts get-caller-identity
     #aws iam get-user
