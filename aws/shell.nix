@@ -23,6 +23,7 @@ pkgs.mkShell {
 
   buildInputs = [
     asmr
+    pkgs.direnv
     pkgs.figlet
     pkgs.lolcat
     pkgs.coreutils
@@ -39,6 +40,7 @@ pkgs.mkShell {
     fi
 
     export AWS_PROMPT_SHOWN="true"
+    eval "$(direnv hook bash)"
     export PS1='\n\[\033[1;32m\][aws:\w]\$\[\033[0m\] '
     figlet "AWS" | lolcat --freq 0.5
     echo "You now have aws and stack_master tools available in your shell."
