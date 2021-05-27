@@ -1,5 +1,6 @@
 { sources ? import ../nix/sources.nix
 , pkgs ? import sources.nixpkgs {}
+, master ? import sources.master {}
 }:
 
 let 
@@ -23,7 +24,7 @@ pkgs.mkShell {
 
   buildInputs = [
     asmr
-    pkgs.direnv
+    master.direnv
     pkgs.figlet
     pkgs.lolcat
     pkgs.coreutils
