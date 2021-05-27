@@ -41,6 +41,7 @@ pkgs.mkShell {
     fi
 
     export AWS_PROMPT_SHOWN="true"
+    export AWS_DEFAULT_REGION="eu-central-1"
     eval "$(direnv hook bash)"
     export PS1='\n\[\033[1;32m\][aws:\w]\$\[\033[0m\] '
     figlet "AWS" | lolcat --freq 0.5
