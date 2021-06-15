@@ -12,7 +12,7 @@ in
       enable = true;
       wheelNeedsPassword = false;
     };
-    security.hideProcessInformation = true;
+    #security.hideProcessInformation = true;
     boot.cleanTmpDir = true;
   };
 }

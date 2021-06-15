@@ -16,7 +16,7 @@ in
     [ ./cachix.nix ] ++ 
     [ ./data.nix ./roles/common.nix ./nix.nix ./fonts.nix ] ++
     # Other stuff
-    [ ./other/qemu.nix ] ++
+   # [ ./other/qemu.nix ] ++
     (all ./profiles); 
 
   profiles = {
@@ -30,11 +30,12 @@ in
   };
 
   # Other stuff
-  qemu-user = {
-    arm = true;
-    aarch64 = true;
-  };
+  #qemu-user = {
+  #  arm = true;
+  #  aarch64 = true;
+  #};
 
+  networking.wireless.interfaces = [ "wlp2s0" ];
   nix = {
     package = pkgs.nixFlakes;
     extraOptions = lib.optionalString (config.nix.package == pkgs.nixFlakes)
@@ -157,7 +158,7 @@ in
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJAMaDaMzVzsgxq64VQ3YTeBfENo96zK56ld0OU/jgi1"
     ];
     
-    packages = with pkgs; (if config.profiles.i3.enable then [ slack vscode-with-extensions chromium firefox thunderbird libreoffice jetbrains.idea-community mplayer ] else []);
+    packages = with pkgs; (if config.profiles.i3.enable then [ slack chromium firefox thunderbird libreoffice jetbrains.idea-community mplayer ] else []);
 
     extraGroups= [
       "audio"
