@@ -1257,10 +1257,10 @@ let
     };
 
     "pyyaml" = python.mkDerivation {
-      name = "pyyaml-5.3";
+      name = "pyyaml-5.4.1";
       src = pkgs.fetchurl {
-        url = "https://files.pythonhosted.org/packages/3d/d9/ea9816aea31beeadccd03f1f8b625ecf8f645bd66744484d162d84803ce5/PyYAML-5.3.tar.gz";
-        sha256 = "e9f45bd5b92c7974e59bcd2dcc8631a6b6cc380a904725fce7bc08872e691615";
+        url = "https://files.pythonhosted.org/packages/a0/a4/d63f2d7597e1a4b55aa3b4d6c5b029991d3b824b5bd331af8d4ab1ed687d/PyYAML-5.4.1.tar.gz";
+        sha256 = "0pm440pmpvgv5rbbnm8hk4qga5a292kvlm1bh3x2nwr8pb5p8xv0";
 };
       doCheck = commonDoCheck;
       format = "setuptools";

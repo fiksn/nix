@@ -1,0 +1,1 @@
+export AWS_CHOICE=$(find_up aws-choice/mts-aws.sh)
