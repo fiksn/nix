@@ -8,10 +8,10 @@ let
      PROJECT=''${PROJECT:-"mts"}
      ALL=''${ALL:-"false"}
      if [ "$ALL" = "true" ]; then
-       aws ec2 describe-instances | jq '.Reservations[].Instances[] | (.InstanceId + "|" + .InstanceType + "|" + .PrivateIpAddress + "|" + .PublicIpAddress + "|" + .Placement.AvailabilityZone + "|" + .State.Name + "|" + .LaunchTime + "|" + .ImageId) + "|" + ((.Tags // [ { "Key": "Name", "Value": "" } ])[] | select(.Key=="Name") | .Value)' | tr -d '"'
+       aws ec2 describe-instances | jq -r '.Reservations[].Instances[] | (.InstanceId + "|" + .InstanceType + "|" + .PrivateIpAddress + "|" + .PublicIpAddress + "|" + .Placement.AvailabilityZone + "|" + .State.Name + "|" + .LaunchTime + "|" + .ImageId) + "|" + ((.Tags // [ { "Key": "Name", "Value": "" } ])[] | select(.Key=="Name") | .Value)'
      else
-       aws ec2 describe-instances --filters "Name=tag:Project,Values=$PROJECT" | jq '.Reservations[].Instances[] | (.InstanceId + "|" + .InstanceType + "|" + .PrivateIpAddress + "|" + .PublicIpAddress + "|" + .Placement.AvailabilityZone + "|" + .State.Name + "|" + .LaunchTime + "|" + .ImageId) + "|" + ((.Tags // [ { "Key": "Name", "Value": "" } ])[] | select(.Key=="Name") | .Value)' | tr -d '"'
-       aws ec2 describe-instances --filters "Name=tag:KubernetesCluster,Values=*$PROJECT*" | jq '.Reservations[].Instances[] | (.InstanceId + "|" + .InstanceType + "|" + .PrivateIpAddress + "|" + .PublicIpAddress + "|" + .Placement.AvailabilityZone + "|" + .State.Name + "|" + .LaunchTime + "|" + .ImageId) + "|" + ((.Tags // [ { "Key": "Name", "Value": "" } ])[] | select(.Key=="Name") | .Value)' | tr -d '"'
+       aws ec2 describe-instances --filters "Name=tag:Project,Values=$PROJECT" | jq -r '.Reservations[].Instances[] | (.InstanceId + "|" + .InstanceType + "|" + .PrivateIpAddress + "|" + .PublicIpAddress + "|" + .Placement.AvailabilityZone + "|" + .State.Name + "|" + .LaunchTime + "|" + .ImageId) + "|" + ((.Tags // [ { "Key": "Name", "Value": "" } ])[] | select(.Key=="Name") | .Value)'
+       aws ec2 describe-instances --filters "Name=tag:KubernetesCluster,Values=*$PROJECT*" | jq -r '.Reservations[].Instances[] | (.InstanceId + "|" + .InstanceType + "|" + .PrivateIpAddress + "|" + .PublicIpAddress + "|" + .Placement.AvailabilityZone + "|" + .State.Name + "|" + .LaunchTime + "|" + .ImageId) + "|" + ((.Tags // [ { "Key": "Name", "Value": "" } ])[] | select(.Key=="Name") | .Value)'
      fi
    '';
 
