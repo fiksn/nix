@@ -13,7 +13,6 @@
       };
     };
     enableDefaultFonts = true;
-    fontDir.enable = true;
     fonts = [
       pkgs.anonymousPro
       pkgs.arkpandora_ttf
