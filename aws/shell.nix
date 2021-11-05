@@ -16,9 +16,7 @@ let
    '';
 
    awsTools = pkgs.callPackage ./. { };
-
 in
-
 pkgs.mkShell {
   name = "aws";
 
