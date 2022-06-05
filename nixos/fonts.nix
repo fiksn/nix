@@ -25,13 +25,13 @@
       pkgs.dejavu_fonts
       pkgs.google-fonts
       pkgs.inconsolata
-      pkgs.liberationsansnarrow
+      pkgs.liberation-sans-narrow
       pkgs.liberation_ttf
       pkgs.libertine
       pkgs.mononoki
       pkgs.montserrat
       pkgs.norwester-font
-      pkgs.opensans-ttf
+      pkgs.open-sans
       pkgs.powerline-fonts
       pkgs.roboto
       pkgs.sampradaya

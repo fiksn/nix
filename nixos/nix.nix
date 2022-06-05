@@ -7,7 +7,7 @@ with lib;
 
   # automatic gc
   nix.gc = {
-    automatic = true;
+    automatic = false;
     dates = "03:15";
     options = "--delete-older-than 30d";
   };

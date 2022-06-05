@@ -58,7 +58,7 @@ floating_modifier $mod
 exec xautolock -time 1 -locker '/etc/lock.sh'&
 
 # start a terminal
-bindsym $mod+Return exec i3-sensible-terminal -bg black -fg white -fa "Monospace" -fs 12 -sl 99999
+bindsym $mod+Return exec i3-sensible-terminal --hide-toolbar --hide-menubar
 
 # kill focused window
 bindsym $mod+Shift+q kill

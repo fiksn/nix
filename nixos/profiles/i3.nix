@@ -52,7 +52,6 @@ in
         scrot 
         dzen2
         gnupg
-        keepnote
         lxrandr
         nitrogen
       ];
@@ -75,7 +74,7 @@ in
     programs.dconf.enable = true;
 
     services = {
-      dbus.packages = [ pkgs.gnome3.dconf ];
+      dbus.packages = [ pkgs.dconf ];
 
       xserver = {
 	enable = true;
