@@ -3,7 +3,7 @@
 with lib;
 
 {
-  nix.useSandbox = true;
+  nix.settings.sandbox = true;
 
   # automatic gc
   nix.gc = {

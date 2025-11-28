@@ -13,6 +13,6 @@ in
       wheelNeedsPassword = false;
     };
     #security.hideProcessInformation = true;
-    boot.cleanTmpDir = true;
+    boot.tmp.cleanOnBoot = true;
   };
 }

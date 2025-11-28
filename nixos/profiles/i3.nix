@@ -43,13 +43,13 @@ in
 
     environment = {
       systemPackages = with pkgs; [
-        gnome3.gnome-screenshot
+        gnome-screenshot
         xautolock
         gparted
         wireshark-qt
         pavucontrol
         playerctl
-        scrot 
+        scrot
         dzen2
         gnupg
         lxrandr
@@ -57,8 +57,8 @@ in
       ];
 
       etc = {
-	"compton/inverted"          .source = ./config/compton-inverted;
-	"compton/noninverted"       .source = ./config/compton-noninverted;
+	"picom/inverted"            .source = ./config/compton-inverted;
+	"picom/noninverted"         .source = ./config/compton-noninverted;
 	"dunst/dunstrc"             .source = ./config/dunstrc;
 	"i3/config"                 .source = ./config/i3;
 	"i3/status"                 .source = ./config/i3status;
@@ -75,14 +75,16 @@ in
 
     services = {
       dbus.packages = [ pkgs.dconf ];
+      libinput.enable = true;
+
+      displayManager = {
+        defaultSession = "xfce+i3";
+      };
 
       xserver = {
 	enable = true;
-	libinput.enable = true;
-	layout = "si";
-        displayManager = {
-          defaultSession = "xfce+i3";
-        };
+	xkb.layout = "si";
+
 	desktopManager = {
 	  session = [
 	    {
@@ -117,7 +119,7 @@ in
 	    i3blocks #if you are planning on using i3blocks over i3status
 	    i3-gaps
             rofi
-            gnome3.zenity
+            zenity
             xfce.xfce4-taskmanager
 	  ];
 	};
@@ -125,17 +127,17 @@ in
     };
 
     systemd.services = {
-      compton = simpleXService "compton"
+      picom = simpleXService "picom"
 	"lightweight compositing manager"
-	"${pkgs.compton}/bin/compton -cCG --config /etc/compton/noninverted"
+	"${pkgs.picom}/bin/picom --config /etc/picom/noninverted"
 	;
-      compton-night =
-	let base-service = simpleXService "compton-night"
+      picom-night =
+	let base-service = simpleXService "picom-night"
 	      "lightweight compositing manager (night mode)"
-	      "${pkgs.compton}/bin/compton -cCG --config /etc/compton/inverted"
+	      "${pkgs.picom}/bin/picom --config /etc/picom/inverted"
 	      ;
 	in base-service // {
-	    conflicts = [ "compton.service" ];
+	    conflicts = [ "picom.service" ];
 	    wantedBy = [ ];
 	};
       dunst = simpleXService "dunst"

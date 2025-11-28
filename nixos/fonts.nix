@@ -12,8 +12,8 @@
         serif = [ "Roboto Slab Regular" "DejaVu Serif" ];
       };
     };
-    enableDefaultFonts = true;
-    fonts = [
+    enableDefaultPackages = true;
+    packages = [
       pkgs.anonymousPro
       pkgs.arkpandora_ttf
       pkgs.caladea

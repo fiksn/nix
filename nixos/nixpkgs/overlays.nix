@@ -7,10 +7,8 @@ let
 	   mtl QuickCheck random text alex cabal-install cpphs happy ghc-paths set-monad
 	]);
     
-    # nix-shell -p maven
-    maven = super.maven.override {
-      jdk = super.zulu;
-    };
+    # maven no longer accepts jdk override in 25.05
+    # Use maven.override { jdk_headless = super.zulu; } if needed
 
     sysPackages = super.lib.hiPrio (super.buildEnv {
       name = "sys-packages";

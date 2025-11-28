@@ -36,25 +36,29 @@ in
   #};
 
   networking.wireless.interfaces = [ "wlp2s0" ];
-  nix = {
-    package = pkgs.nixFlakes;
-    extraOptions = lib.optionalString (config.nix.package == pkgs.nixFlakes)
-      ''experimental-features = nix-command flakes
-        keep-outputs = true
-      '';
+  # Flakes are now integrated into the main nix package
+  nix.settings = {
+    experimental-features = [ "nix-command" "flakes" ];
+    keep-outputs = true;
   };
 
-  services.dhcpd4 = {
+  # Migrated from dhcpd4 to kea (dhcpd4 removed in NixOS 24.05)
+  services.kea.dhcp4 = {
     enable = true;
-    interfaces = [ "enp3s0" ];
-    extraConfig = ''
-      option subnet-mask 255.255.255.0;
-      option routers 192.168.2.1;
-      option domain-name-servers 1.1.1.1;
-      subnet 192.168.2.0 netmask 255.255.255.0 {
-        range 192.168.2.2 192.168.2.3;
-      }
-    '';
+    settings = {
+      interfaces-config = {
+        interfaces = [ "enp3s0" ];
+      };
+      subnet4 = [{
+        subnet = "192.168.2.0/24";
+        pools = [{ pool = "192.168.2.2 - 192.168.2.3"; }];
+        option-data = [
+          { name = "routers"; data = "192.168.2.1"; }
+          { name = "domain-name-servers"; data = "1.1.1.1"; }
+          { name = "subnet-mask"; data = "255.255.255.0"; }
+        ];
+      }];
+    };
   };
 
   # Test
@@ -82,7 +86,8 @@ in
 
   fileSystems."/".options = [ "noatime" "nodiratime" "discard" ];
 
-  boot.kernelPackages = pkgs.linuxPackages_5_4;
+  # Updated to modern LTS kernel (5.4 is very old and unsupported)
+  boot.kernelPackages = pkgs.linuxPackages_6_6;
 
   # Or else I keep getting Corrected error dmesg spam
   boot.kernelParams = [ "pci=noaer" ];
@@ -95,11 +100,15 @@ in
 
   powerManagement.enable = true;
   hardware.bluetooth.enable = true;
-  hardware.pulseaudio = {
+  # Replaced PulseAudio with PipeWire (modern audio system)
+  services.pipewire = {
     enable = true;
-    support32Bit = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    jack.enable = true;
   };
-  hardware.opengl.driSupport32Bit = true; 
+  hardware.graphics.enable32Bit = true; 
 
   # xbacklight alternative
   environment.systemPackages = with pkgs; [ acpilight ];
@@ -131,11 +140,13 @@ in
 
   services.openssh = {
     enable = true;
-    permitRootLogin = "prohibit-password";
-    passwordAuthentication = false;
-    allowSFTP = true;
-    forwardX11 = true;
     openFirewall = true;
+    settings = {
+      PermitRootLogin = "prohibit-password";
+      PasswordAuthentication = false;
+      X11Forwarding = true;
+    };
+    # allowSFTP is enabled by default, removed the option
   };
   
   programs.gnupg.agent = {

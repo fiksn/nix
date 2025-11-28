@@ -6,6 +6,7 @@
     "vm.overcommit_memory" = 1;
   };
 
+  programs.vim.enable = true;
   programs.vim.defaultEditor = true;
   environment.interactiveShellInit = ''
     alias vi='vim'
@@ -16,10 +17,10 @@
 
       corkscrew
       proxychains
- 
+
       ntfs3g
       disnix
-      dhcp
+      kea
       irssi
   ];
 
